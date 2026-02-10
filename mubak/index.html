@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak</title>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./images/mubak_icon.png" />
+</head>
+
+<body>
+    <header class="header"><!--div responsavel pelo container do cabecalho -->
+        <div class="header_logo"><!--div responsavel pelo container da logo do Mubak -->
+            <img src="./images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
+        </div>
+        <div class="header_barra_pesquisa"> <!--div responsavel pelo container da barra de pesquisa -->
+            <form action="/pesquisar" method="GET">
+                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
+                <button type="submit">Pesquisar</button>
+            </form>
+        </div>
+        <div class="header_login"> <!--div responsavel pelo container do login de usuario -->
+            <img src="./images/login_icon.png" alt="Login de usuário" title="Login de usuário">
+        </div>
+    </header>
+    <main>
+        <div class="menu_principal"> <!--div responsavel pelo container do menu principal da pagina -->
+            <nav>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Peças</a></li>
+                    <li><a href="#">Computadores</a></li>
+                    <li><a href="#">Laptops</a></li>
+                    <li><a href="#">Smartphones</a></li>
+                    <li><a href="#">Monitores</a></li>
+                    <li><a href="#">Acessorios</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="banner_principal"> <!--div responsavel pelo container do banner principal da pagina -->
+            <img src="./images/banner.png" alt="Banner principal" title="Banner principal">
+        </div>
+        <div class="carrosseis"> <!--div responsavel pelo container dos carroseis da pagina -->
+            <div class="carrosel_promocoes"> <!--div responsavel pelo container do carrosel de promocoes -->
+                <h2>Promoções em Destaque</h2>
+                <div class="div_carrosel_promocoes">
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Placa de Vídeo RTX</h3>
+                        <p class="preco">R$ 2.500,00</p>
+                    </div>
+
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Processador i9</h3>
+                        <p class="preco">R$ 3.200,00</p>
+                    </div>
+
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Placa Mae</h3>
+                        <p class="preco">R$ 400,00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carrosel_produtos_visualizados">
+                <!--div responsavel pelo container do carrosel de produtos visualizados -->
+                <h2>Vistos Recentementes</h2>
+                <div class="div_carrosel_produtos_visualizados">
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Placa de Vídeo RTX</h3>
+                        <p class="preco">R$ 2.500,00</p>
+                    </div>
+
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Processador i9</h3>
+                        <p class="preco">R$ 3.200,00</p>
+                    </div>
+
+                    <div class="produto_card">
+                        <img src="./images/temp.png" alt="Produto">
+                        <h3>Placa Mae</h3>
+                        <p class="preco">R$ 400,00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <h2>©Todos direitos reservados</h2>
+    </footer>
+</body>
+
+</html>
