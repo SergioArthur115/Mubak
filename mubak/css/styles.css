@@ -22,7 +22,7 @@ body {
 
 /* Container do Menu */
 .menu_principal {
-    background-color: #333; /* Cor de fundo para destacar */
+    background-color: #0a2332; /* Cor de fundo para destacar */
     padding: 10px 0;
 }
 
@@ -59,29 +59,37 @@ body {
 
 .banner_principal img {
     width: 100%;           /* Força a largura a ser 100% do container */
-    height: 300px;          /* Calcula a altura proporcionalmente (450px base) */
+    height: 300px;
     display: block;        /* Remove espaços vazios na base da imagem */
 
 }
 
 /*------------------ Seção dos carroseis ---------------*/
 
-.Carrosseis {
+.carrosseis {
     display: flex;
     flex-direction: column; /* Coloca um carrossel abaixo do outro */
     align-items: center;    /* Centraliza os itens horizontalmente */
     width: 100%;
+    padding: 20px 0;
+}
+
+.carrosel_promocoes,.carrosel_produtos_visualizados{
+    width: 65%;             /* Não deixa o carrossel colado nas bordas da tela */
+    max-width: 1200px;      /* Limite para telas grandes */
+    margin-bottom: 1%;    /* Espaço entre um carrossel e outro */
 }
 
 .div_carrosel_promocoes, .div_carrosel_produtos_visualizados{
     display: flex;
-    overflow-x: auto;         /* Permite rolar para o lado */
-    scroll-snap-type: x mandatory; /* Faz o efeito de "pular" de um em um */
-    gap: 20px;                /* Espaço entre os cards */
-    padding: 20px 0;
-    scroll-behavior: smooth;  /* Suaviza o movimento */
+    gap: 40px;                /* Espaço entre os cards */
     justify-content: center;
     width: 100%;
+    border: 2px solid #0a2332;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Centraliza o título H2 */
@@ -92,6 +100,7 @@ h2 {
     font-family: sans-serif;
     width: 100%;
 }
+
 
 /* Esconde a barra de rolagem no Chrome/Safari/Edge */
 .div_carrosel_promocoes::-webkit-scrollbar {
@@ -112,4 +121,8 @@ h2 {
     width: 100%;
     height: 200px;
     object-fit: contain;      /* Garante que a foto do produto não distorça */
+}
+
+.footer{
+    background-color: #0a2332;
 }
