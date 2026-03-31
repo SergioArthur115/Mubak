@@ -1,0 +1,191 @@
+/* =========================================
+   RESPONSIVIDADE — responsive.css
+   Aplicado em todas as páginas via global
+   ========================================= */
+
+/* ---- Tablet (até 1024px) ---- */
+@media (max-width: 1024px) {
+
+    /* Menu */
+    .menu_principal ul {
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 6px 10px;
+    }
+
+    .menu_principal a {
+        font-size: 17px;
+    }
+
+    /* Carrosseis */
+    .carrosel_promocoes,
+    .carrosel_produtos_visualizados {
+        width: 90%;
+    }
+
+    /* Produtos grid: 3 colunas */
+    .produtos_grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Produto detalhe */
+    .produto_detalhe_container {
+        padding: 0 14px;
+    }
+}
+
+/* ---- Mobile grande (até 768px) ---- */
+@media (max-width: 768px) {
+
+    /* Header */
+    .header {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .header_barra_pesquisa {
+        order: 3;
+        flex: 1 1 100%;
+    }
+
+    .header_logo {
+        order: 1;
+    }
+
+    .header_login {
+        order: 2;
+    }
+
+    /* Menu vira scroll horizontal */
+    .menu_principal ul {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 16px;
+        padding: 8px 16px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .menu_principal ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .menu_principal a {
+        font-size: 15px;
+        white-space: nowrap;
+    }
+
+    /* Banner */
+    .banner_principal img {
+        height: 180px;
+    }
+
+    /* Carrosseis */
+    .carrosel_promocoes,
+    .carrosel_produtos_visualizados {
+        width: 95%;
+    }
+
+    /* Produtos: sidebar some, grid 2 colunas */
+    .produtos_layout {
+        flex-direction: column;
+    }
+
+    .filtros_sidebar {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 2px solid var(--cor-primaria);
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .filtros_sidebar h3 {
+        width: 100%;
+    }
+
+    .filtro_grupo {
+        flex: 1 1 140px;
+    }
+
+    .btn_aplicar_filtro {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .produtos_grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Produto detalhe: empilha imagem e info */
+    .produto_detalhe_topo {
+        grid-template-columns: 1fr;
+    }
+
+    .produto_detalhe_imagem {
+        border-right: none;
+        border-bottom: 2px solid var(--cor-primaria);
+    }
+
+    /* Login */
+    .login_box {
+        padding: 30px 24px;
+    }
+
+    .login_campo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .login_campo label {
+        text-align: left;
+        min-width: unset;
+    }
+
+    /* Perfil */
+    .perfil_container {
+        padding: 30px 14px;
+    }
+
+    .perfil_menu_item a {
+        padding: 14px 24px;
+        font-size: 17px;
+    }
+}
+
+/* ---- Mobile pequeno (até 480px) ---- */
+@media (max-width: 480px) {
+
+    .menu_principal a {
+        font-size: 13px;
+    }
+
+    .banner_principal img {
+        height: 130px;
+    }
+
+    /* Produtos: 1 coluna */
+    .produtos_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .produto_detalhe_info_principal {
+        padding: 18px;
+    }
+
+    .produto_nome {
+        font-size: 20px;
+    }
+
+    .produto_preco_detalhe {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+}

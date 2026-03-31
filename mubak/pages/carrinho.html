@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Carrinho</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/global.css" />
+    <link rel="stylesheet" type="text/css" href="../css/carrinho.css" />
+    <link rel="stylesheet" type="text/css" href="../css/responsive.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
+</head>
+
+<body>
+    <header class="header">
+        <figure class="header_logo">
+            <a href="../index.html">
+                <img src="../images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
+            </a>
+        </figure>
+        <section class="header_barra_pesquisa">
+            <form action="/pesquisar" method="GET">
+                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
+                <button type="submit">Pesquisar</button>
+            </form>
+        </section>
+        <div class="header_login">
+            <a href="./login.html">
+                <img src="../images/login_icon.png" alt="Login de usuário" title="Login de usuário">
+            </a>
+        </div>
+    </header>
+    <main>
+        <nav class="menu_principal">
+            <ul>
+                <li><a href="../index.html">Início</a></li>
+                <li><a href="./produtos.html">Peças</a></li>
+                <li><a href="./produtos.html">Computadores</a></li>
+                <li><a href="./produtos.html">Laptops</a></li>
+                <li><a href="./produtos.html">Smartphones</a></li>
+                <li><a href="./produtos.html">Monitores</a></li>
+                <li><a href="./produtos.html">Acessórios</a></li>
+            </ul>
+        </nav>
+
+        <div class="carrinho_container">
+            <!-- Lista de itens -->
+            <div class="carrinho_lista">
+                <h2>Meu Carrinho</h2>
+                <div id="lista-itens">
+                    <!-- Itens renderizados pelo JS -->
+                </div>
+            </div>
+
+            <!-- Resumo -->
+            <aside class="carrinho_resumo">
+                <h2>Resumo do Pedido</h2>
+                <div class="resumo_linha">
+                    <span>Subtotal</span>
+                    <span id="resumo-subtotal">R$ 0,00</span>
+                </div>
+                <div class="resumo_linha">
+                    <span>Frete</span>
+                    <span id="resumo-frete">Grátis</span>
+                </div>
+                <div class="resumo_linha total">
+                    <span>Total</span>
+                    <span id="resumo-total">R$ 0,00</span>
+                </div>
+                <button class="btn_finalizar" id="btn-finalizar">Finalizar Compra</button>
+                <a href="./produtos.html" class="btn_continuar_comprando">Continuar Comprando</a>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer">
+        <h2>©Todos direitos reservados</h2>
+    </footer>
+
+    <script src="../js/menu-ativo.js"></script>
+    <script>
+        // Carrinho simples com localStorage
+        function formatarPreco(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function carregarCarrinho() {
+            return JSON.parse(localStorage.getItem('carrinho') || '[]');
+        }
+
+        function salvarCarrinho(carrinho) {
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        }
+
+        function calcularTotal(carrinho) {
+            return carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+        }
+
+        function renderizarCarrinho() {
+            const carrinho = carregarCarrinho();
+            const lista = document.getElementById('lista-itens');
+            const total = calcularTotal(carrinho);
+
+            document.getElementById('resumo-subtotal').textContent = formatarPreco(total);
+            document.getElementById('resumo-total').textContent = formatarPreco(total);
+
+            if (carrinho.length === 0) {
+                lista.innerHTML = `
+                    <div class="carrinho_vazio">
+                        <p>Seu carrinho está vazio.</p>
+                        <p><a href="./produtos.html">Clique aqui para ver os produtos</a></p>
+                    </div>`;
+                return;
+            }
+
+            lista.innerHTML = carrinho.map((item, index) => `
+                <div class="carrinho_item">
+                    <img src="${item.imagem}" alt="${item.nome}">
+                    <div class="carrinho_item_info">
+                        <span class="carrinho_item_nome">${item.nome}</span>
+                        <span class="carrinho_item_preco">${formatarPreco(item.preco)}</span>
+                        <div class="carrinho_item_qtd">
+                            <label>Qtd:</label>
+                            <input type="number" value="${item.quantidade}" min="1"
+                                onchange="alterarQuantidade(${index}, this.value)">
+                        </div>
+                    </div>
+                    <div class="carrinho_item_acoes">
+                        <button class="btn_remover" onclick="removerItem(${index})">✕ Remover</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removerItem(index) {
+            const carrinho = carregarCarrinho();
+            carrinho.splice(index, 1);
+            salvarCarrinho(carrinho);
+            renderizarCarrinho();
+        }
+
+        function alterarQuantidade(index, novaQtd) {
+            const carrinho = carregarCarrinho();
+            carrinho[index].quantidade = Math.max(1, parseInt(novaQtd) || 1);
+            salvarCarrinho(carrinho);
+            renderizarCarrinho();
+        }
+
+        document.getElementById('btn-finalizar').addEventListener('click', function () {
+            const carrinho = carregarCarrinho();
+            if (carrinho.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            alert('Pedido finalizado! Obrigado pela compra.');
+            salvarCarrinho([]);
+            renderizarCarrinho();
+        });
+
+        renderizarCarrinho();
+    </script>
+</body>
+
+</html>

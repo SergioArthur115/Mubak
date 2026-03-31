@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak - Produto</title>
     <link rel="stylesheet" type="text/css" href="../css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../css/global.css" />
     <link rel="stylesheet" type="text/css" href="../css/produto.css" />
+    <link rel="stylesheet" type="text/css" href="../css/responsive.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
 </head>
 
@@ -44,57 +45,42 @@
         </nav>
 
         <div class="produto_detalhe_container">
-            <!-- Seção superior: Imagem + Informações principais -->
             <div class="produto_detalhe_topo">
                 <div class="produto_detalhe_imagem">
-                    <img src="../images/temp.png" alt="Imagem do Produto">
+                    <img src="../images/temp.png" alt="Imagem do Produto" id="produto-img">
                 </div>
                 <div class="produto_detalhe_info_principal">
-                    <h1 class="produto_nome">Nome do Produto</h1>
-                    <p class="produto_preco_detalhe">R$ 0,00</p>
+                    <h1 class="produto_nome" id="produto-nome">Nome do Produto</h1>
+                    <p class="produto_preco_detalhe" id="produto-preco">R$ 0,00</p>
                     <p class="produto_disponibilidade">Em estoque</p>
                     <div class="produto_quantidade">
                         <label for="qtd">Quantidade:</label>
                         <input type="number" id="qtd" name="qtd" value="1" min="1">
                     </div>
                     <div class="produto_botoes">
-                        <button class="btn_comprar">Comprar agora</button>
-                        <button class="btn_carrinho">Adicionar ao Carrinho</button>
-                        <button class="btn_favorito">♡ Favoritar</button>
+                        <button class="btn_comprar" id="btn-comprar">Comprar agora</button>
+                        <button class="btn_carrinho" id="btn-carrinho">Adicionar ao Carrinho</button>
+                        <button class="btn_favorito" id="btn-favorito">♡ Favoritar</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Seção inferior: Descrição + Informações Técnicas -->
             <div class="produto_detalhe_descricao">
                 <h2>Descrição</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat.
                 </p>
             </div>
             <div class="produto_detalhe_tecnico">
                 <h2>Informações Técnicas</h2>
                 <table class="tabela_tecnica">
-                    <tr>
-                        <th>Marca</th>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <th>Modelo</th>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <th>Garantia</th>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <th>Peso</th>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <th>Dimensões</th>
-                        <td>—</td>
-                    </tr>
+                    <tr><th>Marca</th><td>—</td></tr>
+                    <tr><th>Modelo</th><td>—</td></tr>
+                    <tr><th>Garantia</th><td>—</td></tr>
+                    <tr><th>Peso</th><td>—</td></tr>
+                    <tr><th>Dimensões</th><td>—</td></tr>
                 </table>
             </div>
         </div>
@@ -102,6 +88,59 @@
     <footer class="footer">
         <h2>©Todos direitos reservados</h2>
     </footer>
+
+    <script src="../js/menu-ativo.js"></script>
+    <script>
+        function formatarPreco(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function adicionarAoCarrinho(nome, preco, imagem, quantidade) {
+            const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+            const index = carrinho.findIndex(i => i.nome === nome);
+            if (index >= 0) {
+                carrinho[index].quantidade += quantidade;
+            } else {
+                carrinho.push({ nome, preco, imagem, quantidade });
+            }
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        }
+
+        document.getElementById('btn-carrinho').addEventListener('click', function () {
+            const nome = document.getElementById('produto-nome').textContent;
+            const precoTexto = document.getElementById('produto-preco').textContent;
+            const preco = parseFloat(precoTexto.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
+            const imagem = document.getElementById('produto-img').src;
+            const quantidade = parseInt(document.getElementById('qtd').value) || 1;
+
+            adicionarAoCarrinho(nome, preco, imagem, quantidade);
+
+            const btn = document.getElementById('btn-carrinho');
+            btn.textContent = '✓ Adicionado!';
+            btn.style.backgroundColor = 'var(--cor-sucesso)';
+            setTimeout(() => {
+                btn.textContent = 'Adicionar ao Carrinho';
+                btn.style.backgroundColor = '';
+            }, 2000);
+        });
+
+        document.getElementById('btn-comprar').addEventListener('click', function () {
+            const nome = document.getElementById('produto-nome').textContent;
+            const precoTexto = document.getElementById('produto-preco').textContent;
+            const preco = parseFloat(precoTexto.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
+            const imagem = document.getElementById('produto-img').src;
+            const quantidade = parseInt(document.getElementById('qtd').value) || 1;
+
+            adicionarAoCarrinho(nome, preco, imagem, quantidade);
+            window.location.href = './carrinho.html';
+        });
+
+        document.getElementById('btn-favorito').addEventListener('click', function () {
+            this.textContent = this.textContent.includes('♡') ? '♥ Favoritado' : '♡ Favoritar';
+            this.style.backgroundColor = this.textContent.includes('♥') ? 'var(--cor-primaria)' : '';
+            this.style.color = this.textContent.includes('♥') ? 'var(--cor-branca)' : '';
+        });
+    </script>
 </body>
 
 </html>

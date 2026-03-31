@@ -1,0 +1,103 @@
+/* =========================================
+   PÁGINA DE CADASTRO — cadastro.html
+   ========================================= */
+
+.cadastro_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 260px);
+    padding: 40px 20px;
+}
+
+.cadastro_box {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    padding: 40px 50px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: var(--sombra);
+}
+
+.cadastro_box h2 {
+    color: var(--cor-primaria);
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.cadastro_form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.cadastro_campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cadastro_campo label {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--cor-primaria);
+}
+
+.cadastro_campo input {
+    padding: 10px 14px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 15px;
+    background-color: var(--cor-branca);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.cadastro_campo input:focus {
+    border-color: var(--cor-destaque);
+}
+
+.cadastro_campo input.erro {
+    border-color: var(--cor-perigo);
+}
+
+.cadastro_campo .msg_erro {
+    font-size: 12px;
+    color: var(--cor-perigo);
+    display: none;
+}
+
+.cadastro_campo.invalido .msg_erro {
+    display: block;
+}
+
+.btn_cadastrar {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+    border: none;
+    border-radius: var(--borda-radius);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 6px;
+}
+
+.btn_cadastrar:hover {
+    background-color: var(--cor-destaque);
+}
+
+.cadastro_login {
+    text-align: center;
+    font-size: 14px;
+    color: var(--cor-primaria);
+}
+
+.cadastro_login a {
+    color: var(--cor-destaque);
+    font-weight: bold;
+    text-decoration: underline;
+}

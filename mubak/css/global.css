@@ -145,3 +145,10 @@ h2 {
     font-size: 14px;
     font-weight: normal;
 }
+
+/* Item ativo no menu principal */
+.menu_principal a.ativo {
+    color: var(--cor-destaque);
+    border-bottom: 2px solid var(--cor-destaque);
+    padding-bottom: 2px;
+}
