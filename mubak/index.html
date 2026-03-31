@@ -6,91 +6,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak</title>
     <link rel="stylesheet" type="text/css" href="./css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="./css/global.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./images/mubak_icon.png" />
 </head>
 
 <body>
-    <header class="header"><!--div responsavel pelo container do cabecalho -->
-        <figure class="header_logo"><!--div responsavel pelo container da logo do Mubak -->
+    <header class="header">
+        <figure class="header_logo">
             <img src="./images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
         </figure>
-        <section class="header_barra_pesquisa"> <!--div responsavel pelo container da barra de pesquisa -->
+        <section class="header_barra_pesquisa">
             <form action="/pesquisar" method="GET">
                 <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
                 <button type="submit">Pesquisar</button>
             </form>
         </section>
-        <div class="header_login"> <!--div responsavel pelo container do login de usuario -->
-            <img src="./images/login_icon.png" alt="Login de usuário" title="Login de usuário">
+        <div class="header_login">
+            <a href="./pages/login.html">
+                <img src="./images/login_icon.png" alt="Login de usuário" title="Login de usuário">
+            </a>
         </div>
     </header>
     <main>
-        <nav class="menu_principal"> <!--div responsavel pelo container do menu principal da pagina -->
+        <nav class="menu_principal">
             <ul>
                 <li><a href="#">Início</a></li>
-                <li><a href="#">Peças</a></li>
-                <li><a href="#">Computadores</a></li>
-                <li><a href="#">Laptops</a></li>
-                <li><a href="#">Smartphones</a></li>
-                <li><a href="#">Monitores</a></li>
-                <li><a href="#">Acessorios</a></li>
+                <li><a href="./pages/produtos.html">Peças</a></li>
+                <li><a href="./pages/produtos.html">Computadores</a></li>
+                <li><a href="./pages/produtos.html">Laptops</a></li>
+                <li><a href="./pages/produtos.html">Smartphones</a></li>
+                <li><a href="./pages/produtos.html">Monitores</a></li>
+                <li><a href="./pages/produtos.html">Acessórios</a></li>
             </ul>
         </nav>
-        <section class="banner_principal"> <!--div responsavel pelo container do banner principal da pagina -->
+        <section class="banner_principal">
             <img src="./images/banner.png" alt="Banner principal" title="Banner principal">
         </section>
-        <div class="carrosseis"> <!--div responsavel pelo container dos carroseis da pagina -->
-            <section class="carrosel_promocoes"> <!--div responsavel pelo container do carrosel de promocoes -->
+
+        <div class="carrosseis">
+
+            <!-- Carrossel de Promoções -->
+            <section class="carrosel_promocoes">
                 <h2>Promoções em Destaque</h2>
-                <div class="div_carrosel_promocoes">
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Placa de Vídeo RTX</h3>
-                        <p class="preco">R$ 2.500,00</p>
-                    </article>
-
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Processador i9</h3>
-                        <p class="preco">R$ 3.200,00</p>
-                    </article>
-
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Placa Mae</h3>
-                        <p class="preco">R$ 400,00</p>
-                    </article>
+                <div class="div_carrosel_promocoes" id="carrosel-promocoes">
+                    <div class="carrosel_faixa">
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Placa de Vídeo RTX</h3>
+                            <p class="preco">R$ 2.500,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Processador i9</h3>
+                            <p class="preco">R$ 3.200,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Placa Mãe Z790</h3>
+                            <p class="preco">R$ 400,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>SSD NVMe 1TB</h3>
+                            <p class="preco">R$ 350,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Memória RAM 32GB</h3>
+                            <p class="preco">R$ 280,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Fonte 850W Gold</h3>
+                            <p class="preco">R$ 520,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Gabinete ATX</h3>
+                            <p class="preco">R$ 390,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Cooler CPU 360mm</h3>
+                            <p class="preco">R$ 180,00</p>
+                        </article>
+                    </div>
                 </div>
             </section>
+
+            <!-- Carrossel de Vistos Recentemente -->
             <section class="carrosel_produtos_visualizados">
-                <!--div responsavel pelo container do carrosel de produtos visualizados -->
-                <h2>Vistos Recentementes</h2>
-                <div class="div_carrosel_produtos_visualizados">
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Placa de Vídeo RTX</h3>
-                        <p class="preco">R$ 2.500,00</p>
-                    </article>
-
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Processador i9</h3>
-                        <p class="preco">R$ 3.200,00</p>
-                    </article>
-
-                    <article class="produto_card">
-                        <img src="./images/temp.png" alt="Produto">
-                        <h3>Placa Mae</h3>
-                        <p class="preco">R$ 400,00</p>
-                    </article>
+                <h2>Vistos Recentemente</h2>
+                <div class="div_carrosel_produtos_visualizados" id="carrosel-vistos">
+                    <div class="carrosel_faixa">
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Placa de Vídeo RTX</h3>
+                            <p class="preco">R$ 2.500,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Processador i9</h3>
+                            <p class="preco">R$ 3.200,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Placa Mãe Z790</h3>
+                            <p class="preco">R$ 400,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Monitor 27" 165Hz</h3>
+                            <p class="preco">R$ 1.200,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Teclado Mecânico</h3>
+                            <p class="preco">R$ 320,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Mouse Gamer</h3>
+                            <p class="preco">R$ 150,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Headset 7.1</h3>
+                            <p class="preco">R$ 270,00</p>
+                        </article>
+                        <article class="produto_card">
+                            <img src="./images/temp.png" alt="Produto">
+                            <h3>Webcam Full HD</h3>
+                            <p class="preco">R$ 190,00</p>
+                        </article>
+                    </div>
                 </div>
             </section>
+
         </div>
     </main>
     <footer class="footer">
         <h2>©Todos direitos reservados</h2>
     </footer>
+
+    <script>
+        /**
+         * Carrossel com scroll infinito automático.
+         * - Duplica a faixa de cards para criar loop sem pulo visível.
+         * - Para ao hover no container; retoma ao sair.
+         */
+        function iniciarCarrosel(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const faixa = container.querySelector('.carrosel_faixa');
+            if (!faixa) return;
+
+            // Duplica os cards para o loop infinito
+            faixa.innerHTML += faixa.innerHTML;
+
+            const larguraOriginal = faixa.scrollWidth / 2; // metade = largura real dos cards originais
+            const velocidade = 0.8; // px por frame
+            let posicao = 0;
+            let pausado = false;
+
+            function animar() {
+                if (!pausado) {
+                    posicao += velocidade;
+
+                    // Quando percorreu a largura original, volta ao início sem pulo
+                    if (posicao >= larguraOriginal) {
+                        posicao = 0;
+                    }
+
+                    faixa.style.transform = `translateX(-${posicao}px)`;
+                }
+                requestAnimationFrame(animar);
+            }
+
+            // Pausa ao entrar no container, retoma ao sair
+            container.addEventListener('mouseenter', () => { pausado = true; });
+            container.addEventListener('mouseleave', () => { pausado = false; });
+
+            requestAnimationFrame(animar);
+        }
+
+        iniciarCarrosel('carrosel-promocoes');
+        iniciarCarrosel('carrosel-vistos');
+    </script>
 </body>
 
 </html>

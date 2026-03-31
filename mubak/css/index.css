@@ -1,0 +1,76 @@
+/* =========================================
+   PÁGINA INICIAL — index.html
+   ========================================= */
+
+.carrosseis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.carrosel_promocoes,
+.carrosel_produtos_visualizados {
+    width: 65%;
+    max-width: 1200px;
+    margin-bottom: 1%;
+}
+
+/* Container visível — mascara o overflow */
+.div_carrosel_promocoes,
+.div_carrosel_produtos_visualizados {
+    width: 100%;
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Faixa interna que se move com translateX — criada pelo JS */
+.carrosel_faixa {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    will-change: transform;
+}
+
+/* Card individual */
+.produto_card {
+    flex: 0 0 250px;
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+    border-radius: var(--borda-radius);
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+    position: relative;
+    top: 0;
+    transition: top 0.2s, box-shadow 0.2s;
+}
+
+.produto_card:hover {
+    top: -4px;
+    box-shadow: var(--sombra);
+}
+
+.produto_card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+.produto_card h3 {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.produto_card .preco {
+    margin-top: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--cor-fundo);
+}

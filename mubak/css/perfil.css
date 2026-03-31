@@ -1,0 +1,62 @@
+/* =========================================
+   PÁGINA DE PERFIL — perfil.html
+   ========================================= */
+
+.perfil_container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 220px);
+    padding: 60px 20px;
+}
+
+.perfil_menu {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.perfil_menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.perfil_menu_item a {
+    display: block;
+    padding: 18px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(10, 35, 50, 0.15);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.perfil_menu_item:last-child a {
+    border-bottom: none;
+}
+
+.perfil_menu_item a:hover {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+.perfil_menu_item.ativo a {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+.perfil_menu_item.sair a {
+    color: var(--cor-perigo);
+}
+
+.perfil_menu_item.sair a:hover {
+    background-color: var(--cor-perigo);
+    color: var(--cor-branca);
+}

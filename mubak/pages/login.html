@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mubak - Meu Perfil</title>
+    <title>Mubak - Login</title>
     <link rel="stylesheet" type="text/css" href="../css/reset.css" />
     <link rel="stylesheet" type="text/css" href="../css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="../css/perfil.css" />
+    <link rel="stylesheet" type="text/css" href="../css/login.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
 </head>
 
@@ -43,16 +43,27 @@
             </ul>
         </nav>
 
-        <section class="perfil_container">
-            <nav class="perfil_menu">
-                <ul>
-                    <li class="perfil_menu_item ativo"><a href="#">Meus Dados</a></li>
-                    <li class="perfil_menu_item"><a href="#">Meus Pedidos</a></li>
-                    <li class="perfil_menu_item"><a href="#">Suporte ao cliente</a></li>
-                    <li class="perfil_menu_item"><a href="#">Favoritos</a></li>
-                    <li class="perfil_menu_item sair"><a href="./login.html">Sair</a></li>
-                </ul>
-            </nav>
+        <section class="login_container">
+            <div class="login_box">
+                <h2>Entrar na sua conta</h2>
+                <div class="login_form">
+                    <div class="login_campo">
+                        <label for="login">Login:</label>
+                        <input type="text" id="login" name="login" placeholder="Digite seu login" autocomplete="username">
+                    </div>
+                    <div class="login_campo">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password">
+                    </div>
+                    <div class="login_acoes">
+                        <button type="button" class="btn_entrar">Entrar</button>
+                        <a href="#" class="link_esqueci_senha">Esqueci minha senha</a>
+                    </div>
+                    <div class="login_cadastro">
+                        <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer class="footer">

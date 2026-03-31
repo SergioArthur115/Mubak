@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Produtos</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../css/produtos.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
+</head>
+
+<body>
+    <header class="header">
+        <figure class="header_logo">
+            <a href="../index.html">
+                <img src="../images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
+            </a>
+        </figure>
+        <section class="header_barra_pesquisa">
+            <form action="/pesquisar" method="GET">
+                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
+                <button type="submit">Pesquisar</button>
+            </form>
+        </section>
+        <div class="header_login">
+            <a href="./login.html">
+                <img src="../images/login_icon.png" alt="Login de usuário" title="Login de usuário">
+            </a>
+        </div>
+    </header>
+    <main>
+        <nav class="menu_principal">
+            <ul>
+                <li><a href="../index.html">Início</a></li>
+                <li><a href="./produtos.html">Peças</a></li>
+                <li><a href="./produtos.html">Computadores</a></li>
+                <li><a href="./produtos.html">Laptops</a></li>
+                <li><a href="./produtos.html">Smartphones</a></li>
+                <li><a href="./produtos.html">Monitores</a></li>
+                <li><a href="./produtos.html">Acessórios</a></li>
+            </ul>
+        </nav>
+
+        <div class="produtos_layout">
+            <!-- Sidebar de Filtros -->
+            <aside class="filtros_sidebar">
+                <h3>Filtros</h3>
+
+                <div class="filtro_grupo">
+                    <h4>Categoria</h4>
+                    <ul class="filtro_lista">
+                        <li><label><input type="checkbox"> Peças</label></li>
+                        <li><label><input type="checkbox"> Computadores</label></li>
+                        <li><label><input type="checkbox"> Laptops</label></li>
+                        <li><label><input type="checkbox"> Smartphones</label></li>
+                        <li><label><input type="checkbox"> Monitores</label></li>
+                        <li><label><input type="checkbox"> Acessórios</label></li>
+                    </ul>
+                </div>
+
+                <div class="filtro_grupo">
+                    <h4>Preço</h4>
+                    <div class="filtro_preco">
+                        <input type="number" placeholder="Mín" class="input_preco">
+                        <span>até</span>
+                        <input type="number" placeholder="Máx" class="input_preco">
+                    </div>
+                </div>
+
+                <div class="filtro_grupo">
+                    <h4>Marca</h4>
+                    <ul class="filtro_lista">
+                        <li><label><input type="checkbox"> Intel</label></li>
+                        <li><label><input type="checkbox"> AMD</label></li>
+                        <li><label><input type="checkbox"> NVIDIA</label></li>
+                        <li><label><input type="checkbox"> Samsung</label></li>
+                        <li><label><input type="checkbox"> LG</label></li>
+                    </ul>
+                </div>
+
+                <button class="btn_aplicar_filtro">Aplicar Filtros</button>
+            </aside>
+
+            <!-- Grid de Produtos -->
+            <section class="produtos_grid_container">
+                <div class="produtos_grid">
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                    <article class="produto_card_grid">
+                        <a href="./produto.html">
+                            <img src="../images/temp.png" alt="Produto">
+                            <h3>Nome do Produto</h3>
+                            <p class="preco">R$ 0,00</p>
+                        </a>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <h2>©Todos direitos reservados</h2>
+    </footer>
+</body>
+
+</html>

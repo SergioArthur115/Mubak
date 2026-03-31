@@ -1,0 +1,109 @@
+/* =========================================
+   PÁGINA DE LOGIN — login.html
+   ========================================= */
+
+.login_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 260px);
+    padding: 40px 20px;
+}
+
+.login_box {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    padding: 40px 50px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--sombra);
+}
+
+.login_box h2 {
+    color: var(--cor-primaria);
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.login_form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login_campo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login_campo label {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--cor-primaria);
+    min-width: 60px;
+    text-align: right;
+}
+
+.login_campo input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 15px;
+    background-color: var(--cor-branca);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.login_campo input:focus {
+    border-color: var(--cor-destaque);
+}
+
+.login_acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn_entrar {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+    border: none;
+    border-radius: var(--borda-radius);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn_entrar:hover {
+    background-color: var(--cor-destaque);
+}
+
+.link_esqueci_senha {
+    color: var(--cor-primaria);
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.link_esqueci_senha:hover {
+    color: var(--cor-destaque);
+}
+
+.login_cadastro {
+    text-align: center;
+    font-size: 14px;
+    color: var(--cor-primaria);
+}
+
+.login_cadastro a {
+    color: var(--cor-destaque);
+    font-weight: bold;
+    text-decoration: underline;
+}
