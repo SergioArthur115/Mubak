@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsive.css') }}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}" />
+</head>
+
+<body>
+    <header class="header">
+        <figure class="header_logo">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/mubak_logo.png') }}" alt="Logo Mubak"
+                    title="Logo Mubak">
+            </a>
+        </figure>
+        <section class="header_barra_pesquisa">
+            <form action="/pesquisar" method="GET">
+                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
+                <button type="submit">Pesquisar</button>
+            </form>
+        </section>
+        <div class="header_login">
+            <a href="{{ url_for('login') }}">
+                <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Login de usuário"
+                    title="Login de usuário">
+            </a>
+        </div>
+    </header>
+    <main>
+        <nav class="menu_principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Peças') }}">Peças</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Computadores') }}">Computadores</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Laptops') }}">Laptops</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Smartphones') }}">Smartphones</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Monitores') }}">Monitores</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Acessórios') }}">Acessórios</a></li>
+            </ul>
+        </nav>
+
+        <section class="login_container">
+            <div class="login_box">
+                <h2>Entrar na sua conta</h2>
+                <div class="login_form">
+                    <div class="login_campo">
+                        <label for="login">Login:</label>
+                        <input type="text" id="login" name="login" placeholder="Digite seu login"
+                            autocomplete="username">
+                    </div>
+                    <div class="login_campo">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha"
+                            autocomplete="current-password">
+                    </div>
+                    <div class="login_acoes">
+                        <button type="button" class="btn_entrar">Entrar</button>
+                        <a href="#" class="link_esqueci_senha">Esqueci minha senha</a>
+                    </div>
+                    <div class="login_cadastro">
+                        <p>Não tem uma conta? <a href="{{ url_for('cadastro') }}">Cadastre-se</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <h2>©Todos direitos reservados</h2>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+</body>
+
+</html>

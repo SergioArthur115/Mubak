@@ -54,6 +54,7 @@
 
 .produto_card:hover {
     top: -4px;
+    scale: 1.05;
     box-shadow: var(--sombra);
 }
 

@@ -34,13 +34,13 @@
     <main>
         <nav class="menu_principal">
             <ul>
-                <li><a href="../index.html">Início</a></li>
-                <li><a href="./produtos.html">Peças</a></li>
-                <li><a href="./produtos.html">Computadores</a></li>
-                <li><a href="./produtos.html">Laptops</a></li>
-                <li><a href="./produtos.html">Smartphones</a></li>
-                <li><a href="./produtos.html">Monitores</a></li>
-                <li><a href="./produtos.html">Acessórios</a></li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Peças') }}">Peças</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Computadores') }}">Computadores</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Laptops') }}">Laptops</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Smartphones') }}">Smartphones</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Monitores') }}">Monitores</a></li>
+                <li><a href="{{ url_for('produtos', categoria='Acessórios') }}">Acessórios</a></li>
             </ul>
         </nav>
 
