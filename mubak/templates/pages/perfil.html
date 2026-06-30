@@ -1,66 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak - Meu Perfil</title>
-    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="../css/global.css" />
-    <link rel="stylesheet" type="text/css" href="../css/perfil.css" />
-    <link rel="stylesheet" type="text/css" href="../css/responsive.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
 </head>
-
 <body>
-    <header class="header">
-        <figure class="header_logo">
-            <a href="../index.html">
-                <img src="../images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
-            </a>
-        </figure>
-        <section class="header_barra_pesquisa">
-            <form action="/pesquisar" method="GET">
-                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
-                <button type="submit">Pesquisar</button>
-            </form>
-        </section>
-        <div class="header_login">
-            <a href="./login.html">
-                <img src="../images/login_icon.png" alt="Login de usuário" title="Login de usuário">
-            </a>
-        </div>
-    </header>
-    <main>
-        <nav class="menu_principal">
-            <ul>
-                <li><a href="{{ url_for('index') }}">Início</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Peças') }}">Peças</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Computadores') }}">Computadores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Laptops') }}">Laptops</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Smartphones') }}">Smartphones</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Monitores') }}">Monitores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Acessórios') }}">Acessórios</a></li>
-            </ul>
-        </nav>
+    {% include 'partials/header.html' %}
 
+    <main>
         <section class="perfil_container">
             <nav class="perfil_menu">
+                <div class="perfil_cabecalho" style="padding: 20px 40px; border-bottom: 1px solid rgba(10,35,50,0.15);">
+                    <p style="font-size:18px; font-weight:bold; color:var(--cor-primaria);">
+                        Olá, {{ user.nome }}
+                    </p>
+                    <p style="font-size:13px; color:var(--cor-primaria); opacity:0.7;">{{ user.email }}</p>
+                </div>
                 <ul>
-                    <li class="perfil_menu_item ativo"><a href="#">Meus Dados</a></li>
-                    <li class="perfil_menu_item"><a href="#">Meus Pedidos</a></li>
-                    <li class="perfil_menu_item"><a href="#">Suporte ao cliente</a></li>
-                    <li class="perfil_menu_item"><a href="#">Favoritos</a></li>
-                    <li class="perfil_menu_item sair"><a href="./login.html">Sair</a></li>
+                    <li class="perfil_menu_item">
+                        <a href="{{ url_for('user.perfil_dados') }}">Meus Dados</a>
+                    </li>
+                    <li class="perfil_menu_item">
+                        <a href="{{ url_for('user.perfil_pedidos') }}">Meus Pedidos</a>
+                    </li>
+                    <li class="perfil_menu_item">
+                        <a href="{{ url_for('user.perfil_enderecos') }}">Meus Endereços</a>
+                    </li>
+                    <li class="perfil_menu_item">
+                        <a href="{{ url_for('carrinho.carrinho') }}">Meu Carrinho</a>
+                    </li>
+                    <li class="perfil_menu_item sair">
+                        <a href="{{ url_for('auth.logout') }}">Sair</a>
+                    </li>
                 </ul>
             </nav>
         </section>
     </main>
-    <footer class="footer">
-        <h2>©Todos direitos reservados</h2>
-    </footer>
 
-    <script src="../js/menu-ativo.js"></script>
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>
-
 </html>

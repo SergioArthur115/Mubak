@@ -1,159 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsive.css') }}" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
 </head>
-
 <body>
-    <header class="header">
-        <figure class="header_logo">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/mubak_logo.png') }}" alt="Logo Mubak"
-                    title="Logo Mubak">
-            </a>
-        </figure>
-        <section class="header_barra_pesquisa">
-            <form action="/pesquisar" method="GET">
-                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
-                <button type="submit">Pesquisar</button>
-            </form>
-        </section>
-        <div class="header_login">
-            <a href="{{ url_for('login') }}">
-                <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Login de usuário"
-                    title="Login de usuário">
-            </a>
-        </div>
-    </header>
+    {% include 'partials/header.html' %}
+
     <main>
-        <nav class="menu_principal">
-            <ul>
-                <li><a href="{{ url_for('index') }}">Início</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Peças') }}">Peças</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Computadores') }}">Computadores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Laptops') }}">Laptops</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Smartphones') }}">Smartphones</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Monitores') }}">Monitores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Acessórios') }}">Acessórios</a></li>
-            </ul>
-        </nav>
         <section class="banner_principal">
-            <img src="{{ url_for('static', filename='images/banner.png') }}" alt="Banner principal"
-                title="Banner principal">
+            <img src="{{ url_for('static', filename='images/banner.png') }}" alt="Banner principal">
         </section>
 
         <div class="carrosseis">
+            <!-- Promoções vindas do banco -->
             <section class="carrosel_promocoes">
                 <h2>Promoções em Destaque</h2>
                 <div class="div_carrosel_promocoes" id="carrosel-promocoes">
                     <div class="carrosel_faixa">
+                        {% for prod in destaques %}
                         <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Placa de Vídeo RTX</h3>
-                            <p class="preco">R$ 2.500,00</p>
+                            <a href="{{ url_for('produto.produto', id_produto=prod.id_produto) }}">
+                                {% if prod.imagem %}
+                                <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                                     alt="{{ prod.nome }}">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/temp.png') }}"
+                                     alt="{{ prod.nome }}">
+                                {% endif %}
+                                <h3>{{ prod.nome }}</h3>
+                                <p class="preco">R$ {{ "%.2f"|format(prod.preco)|replace(".", ",") }}</p>
+                            </a>
                         </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Processador i9</h3>
-                            <p class="preco">R$ 3.200,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Placa Mãe Z790</h3>
-                            <p class="preco">R$ 400,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>SSD NVMe 1TB</h3>
-                            <p class="preco">R$ 350,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Memória RAM 32GB</h3>
-                            <p class="preco">R$ 280,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Fonte 850W Gold</h3>
-                            <p class="preco">R$ 520,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Gabinete ATX</h3>
-                            <p class="preco">R$ 390,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Cooler CPU 360mm</h3>
-                            <p class="preco">R$ 180,00</p>
-                        </article>
+                        {% else %}
+                        <p style="color:var(--cor-primaria); padding:20px;">
+                            Nenhum produto cadastrado ainda.
+                        </p>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
 
+            <!-- Vistos recentemente (mesmos produtos por ora) -->
             <section class="carrosel_produtos_visualizados">
                 <h2>Vistos Recentemente</h2>
                 <div class="div_carrosel_produtos_visualizados" id="carrosel-vistos">
                     <div class="carrosel_faixa">
+                        {% for prod in destaques %}
                         <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Placa de Vídeo RTX</h3>
-                            <p class="preco">R$ 2.500,00</p>
+                            <a href="{{ url_for('produto.produto', id_produto=prod.id_produto) }}">
+                                {% if prod.imagem %}
+                                <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                                     alt="{{ prod.nome }}">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/temp.png') }}"
+                                     alt="{{ prod.nome }}">
+                                {% endif %}
+                                <h3>{{ prod.nome }}</h3>
+                                <p class="preco">R$ {{ "%.2f"|format(prod.preco)|replace(".", ",") }}</p>
+                            </a>
                         </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Processador i9</h3>
-                            <p class="preco">R$ 3.200,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Placa Mãe Z790</h3>
-                            <p class="preco">R$ 400,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Monitor 27" 165Hz</h3>
-                            <p class="preco">R$ 1.200,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Teclado Mecânico</h3>
-                            <p class="preco">R$ 320,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Mouse Gamer</h3>
-                            <p class="preco">R$ 150,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Headset 7.1</h3>
-                            <p class="preco">R$ 270,00</p>
-                        </article>
-                        <article class="produto_card">
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" alt="Produto">
-                            <h3>Webcam Full HD</h3>
-                            <p class="preco">R$ 190,00</p>
-                        </article>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
         </div>
     </main>
-    <footer class="footer">
-        <h2>©Todos direitos reservados</h2>
-    </footer>
+
+    {% include 'partials/footer.html' %}
 
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
     <script src="{{ url_for('static', filename='js/carrosel.js') }}"></script>
 </body>
-
 </html>

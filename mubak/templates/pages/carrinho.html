@@ -1,56 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak - Carrinho</title>
-    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="../css/global.css" />
-    <link rel="stylesheet" type="text/css" href="../css/carrinho.css" />
-    <link rel="stylesheet" type="text/css" href="../css/responsive.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../images/mubak_icon.png" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
 </head>
-
 <body>
-    <header class="header">
-        <figure class="header_logo">
-            <a href="../index.html">
-                <img src="../images/mubak_logo.png" alt="Logo Mubak" title="Logo Mubak">
-            </a>
-        </figure>
-        <section class="header_barra_pesquisa">
-            <form action="/pesquisar" method="GET">
-                <input type="search" name="q" placeholder="O que você procura?" aria-label="Pesquisar">
-                <button type="submit">Pesquisar</button>
-            </form>
-        </section>
-        <div class="header_login">
-            <a href="./login.html">
-                <img src="../images/login_icon.png" alt="Login de usuário" title="Login de usuário">
-            </a>
-        </div>
-    </header>
-    <main>
-        <nav class="menu_principal">
-            <ul>
-                <li><a href="{{ url_for('index') }}">Início</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Peças') }}">Peças</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Computadores') }}">Computadores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Laptops') }}">Laptops</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Smartphones') }}">Smartphones</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Monitores') }}">Monitores</a></li>
-                <li><a href="{{ url_for('produtos', categoria='Acessórios') }}">Acessórios</a></li>
-            </ul>
-        </nav>
+    {% include 'partials/header.html' %}
 
+    <main>
         <div class="carrinho_container">
+
             <!-- Lista de itens -->
             <div class="carrinho_lista">
                 <h2>Meu Carrinho</h2>
-                <div id="lista-itens">
-                    <!-- Itens renderizados pelo JS -->
+
+                {% with msgs = get_flashed_messages() %}
+                {% if msgs %}
+                <ul style="color:var(--cor-sucesso); margin-bottom:12px; list-style:none;">
+                    {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+
+                {% if itens %}
+                {% for item in itens %}
+                <div class="carrinho_item">
+                    {% if item.imagem %}
+                    <img src="{{ url_for('static', filename='uploads/' + item.imagem) }}"
+                         alt="{{ item.nome }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/temp.png') }}"
+                         alt="{{ item.nome }}">
+                    {% endif %}
+
+                    <div class="carrinho_item_info">
+                        <span class="carrinho_item_nome">{{ item.nome }}</span>
+                        <span class="carrinho_item_preco">
+                            R$ {{ "%.2f"|format(item.preco_unitario)|replace(".", ",") }}
+                        </span>
+
+                        <!-- Atualizar quantidade -->
+                        <form method="POST"
+                              action="{{ url_for('carrinho.atualizar', id_produto=item.id_produto) }}"
+                              class="carrinho_item_qtd">
+                            <label>Qtd:</label>
+                            <input type="number" name="quantidade"
+                                   value="{{ item.quantidade }}" min="1"
+                                   onchange="this.form.submit()">
+                        </form>
+                    </div>
+
+                    <div class="carrinho_item_acoes">
+                        <span style="font-weight:bold; color:var(--cor-primaria);">
+                            R$ {{ "%.2f"|format(item.quantidade * item.preco_unitario)|replace(".", ",") }}
+                        </span>
+                        <a href="{{ url_for('carrinho.remover', id_produto=item.id_produto) }}"
+                           class="btn_remover">✕ Remover</a>
+                    </div>
                 </div>
+                {% endfor %}
+
+                {% else %}
+                <div class="carrinho_vazio">
+                    <p>Seu carrinho está vazio.</p>
+                    <p><a href="{{ url_for('produto.produtos') }}">Ver produtos</a></p>
+                </div>
+                {% endif %}
             </div>
 
             <!-- Resumo -->
@@ -58,107 +79,33 @@
                 <h2>Resumo do Pedido</h2>
                 <div class="resumo_linha">
                     <span>Subtotal</span>
-                    <span id="resumo-subtotal">R$ 0,00</span>
+                    <span>R$ {{ "%.2f"|format(total)|replace(".", ",") }}</span>
                 </div>
                 <div class="resumo_linha">
                     <span>Frete</span>
-                    <span id="resumo-frete">Grátis</span>
+                    <span>Grátis</span>
                 </div>
                 <div class="resumo_linha total">
                     <span>Total</span>
-                    <span id="resumo-total">R$ 0,00</span>
+                    <span>R$ {{ "%.2f"|format(total)|replace(".", ",") }}</span>
                 </div>
-                <button class="btn_finalizar" id="btn-finalizar">Finalizar Compra</button>
-                <a href="./produtos.html" class="btn_continuar_comprando">Continuar Comprando</a>
+
+                {% if itens %}
+                <a href="{{ url_for('carrinho.finalizar') }}" class="btn_finalizar"
+                   style="display:block; text-align:center; text-decoration:none;">
+                    Finalizar Compra
+                </a>
+                {% endif %}
+
+                <a href="{{ url_for('produto.produtos') }}" class="btn_continuar_comprando">
+                    Continuar Comprando
+                </a>
             </aside>
+
         </div>
     </main>
-    <footer class="footer">
-        <h2>©Todos direitos reservados</h2>
-    </footer>
 
-    <script src="../js/menu-ativo.js"></script>
-    <script>
-        // Carrinho simples com localStorage
-        function formatarPreco(valor) {
-            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-
-        function carregarCarrinho() {
-            return JSON.parse(localStorage.getItem('carrinho') || '[]');
-        }
-
-        function salvarCarrinho(carrinho) {
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
-        }
-
-        function calcularTotal(carrinho) {
-            return carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-        }
-
-        function renderizarCarrinho() {
-            const carrinho = carregarCarrinho();
-            const lista = document.getElementById('lista-itens');
-            const total = calcularTotal(carrinho);
-
-            document.getElementById('resumo-subtotal').textContent = formatarPreco(total);
-            document.getElementById('resumo-total').textContent = formatarPreco(total);
-
-            if (carrinho.length === 0) {
-                lista.innerHTML = `
-                    <div class="carrinho_vazio">
-                        <p>Seu carrinho está vazio.</p>
-                        <p><a href="./produtos.html">Clique aqui para ver os produtos</a></p>
-                    </div>`;
-                return;
-            }
-
-            lista.innerHTML = carrinho.map((item, index) => `
-                <div class="carrinho_item">
-                    <img src="${item.imagem}" alt="${item.nome}">
-                    <div class="carrinho_item_info">
-                        <span class="carrinho_item_nome">${item.nome}</span>
-                        <span class="carrinho_item_preco">${formatarPreco(item.preco)}</span>
-                        <div class="carrinho_item_qtd">
-                            <label>Qtd:</label>
-                            <input type="number" value="${item.quantidade}" min="1"
-                                onchange="alterarQuantidade(${index}, this.value)">
-                        </div>
-                    </div>
-                    <div class="carrinho_item_acoes">
-                        <button class="btn_remover" onclick="removerItem(${index})">✕ Remover</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function removerItem(index) {
-            const carrinho = carregarCarrinho();
-            carrinho.splice(index, 1);
-            salvarCarrinho(carrinho);
-            renderizarCarrinho();
-        }
-
-        function alterarQuantidade(index, novaQtd) {
-            const carrinho = carregarCarrinho();
-            carrinho[index].quantidade = Math.max(1, parseInt(novaQtd) || 1);
-            salvarCarrinho(carrinho);
-            renderizarCarrinho();
-        }
-
-        document.getElementById('btn-finalizar').addEventListener('click', function () {
-            const carrinho = carregarCarrinho();
-            if (carrinho.length === 0) {
-                alert('Seu carrinho está vazio!');
-                return;
-            }
-            alert('Pedido finalizado! Obrigado pela compra.');
-            salvarCarrinho([]);
-            renderizarCarrinho();
-        });
-
-        renderizarCarrinho();
-    </script>
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>
-
 </html>

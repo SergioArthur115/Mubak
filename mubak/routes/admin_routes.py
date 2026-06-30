@@ -1,82 +1,180 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session  # flask
-from models.user_model import get_all_users, get_user_by_id, update_user, delete_user  # model
-from utils.decorators import admin_required  # proteção
-import os  # arquivos
-import uuid  # gerar nome único
-from config import UPLOAD_FOLDER  # pasta upload
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from models.usuario_model import get_todos_usuarios, get_usuario_por_id, atualizar_usuario, deletar_usuario
+from models.produto_model import (
+    get_todos_produtos, get_produto_por_id, criar_produto,
+    atualizar_produto, deletar_produto, adicionar_imagem_produto, get_todas_categorias
+)
+from utils.decorators import admin_required
+import os, uuid
+from config import UPLOAD_FOLDER
 
 bp = Blueprint('admin', __name__)
 
+
+# ── Painel ─────────────────────────────────────────────────────────────────────
+
 @bp.route('/admin')
 @admin_required
-def admin():
-    search = request.args.get('search','').lower()  # busca
-    order = request.args.get('order','nome')  # ordenação
-    page = int(request.args.get('page',1))  # página atual
+def painel():
+    search = request.args.get('search', '').lower()
+    order  = request.args.get('order', 'nome')
+    page   = int(request.args.get('page', 1))
+    per_page = 10
 
-    per_page = 5  # usuários por página
+    users = get_todos_usuarios()
 
-    users = get_all_users()  # lista todos
-
-    # FILTRO (nome OU email)
     if search:
-        users = [
-            u for u in users
-            if search in u['nome'].lower() or search in u['email'].lower()
-        ]
+        users = [u for u in users if search in u['nome'].lower() or search in u['email'].lower()]
 
-    # ORDENAÇÃO
+    validos = ['nome', 'email', 'id_usuario']
+    order = order if order in validos else 'nome'
     users = sorted(users, key=lambda x: x[order])
 
-    # PAGINAÇÃO
-    total = len(users)
-    start = (page - 1) * per_page
-    end = start + per_page
-    users_paginated = users[start:end]
-
-    total_pages = (total // per_page) + (1 if total % per_page else 0)
+    total       = len(users)
+    start       = (page - 1) * per_page
+    users_page  = users[start:start + per_page]
+    total_pages = max(1, (total + per_page - 1) // per_page)
 
     return render_template(
-        'admin.html',
-        users=users_paginated,
+        'pages/admin.html',
+        users=users_page,
         page=page,
         total_pages=total_pages,
         search=search,
         order=order
     )
 
-# EDITAR
-@bp.route('/admin/edit/<int:id>', methods=['GET','POST'])
+
+# ── Usuários ───────────────────────────────────────────────────────────────────
+
+@bp.route('/admin/usuario/editar/<int:id>', methods=['GET', 'POST'])
 @admin_required
-def edit(id):
-    user = get_user_by_id(id)
+def editar_usuario(id):
+    user = get_usuario_por_id(id)
+    if not user:
+        return "Usuário não encontrado", 404
 
     if request.method == 'POST':
-        nome = request.form.get('nome')
-        email = request.form.get('email')
-        file = request.files.get('foto')
+        nome     = request.form.get('nome', '').strip()
+        email    = request.form.get('email', '').strip()
+        telefone = request.form.get('telefone', '').strip()
+        file     = request.files.get('foto')
 
         filename = user['foto']
-
-        # nome único para imagem
-        if file and file.filename != '':
-            ext = file.filename.split('.')[-1]
+        if file and file.filename:
+            ext = file.filename.rsplit('.', 1)[-1]
             filename = f"{uuid.uuid4()}.{ext}"
             file.save(os.path.join(UPLOAD_FOLDER, filename))
 
-        update_user(id, nome, email, filename)
+        atualizar_usuario(id, nome, email, telefone, filename)
+        flash('Usuário atualizado.')
+        return redirect(url_for('admin.painel'))
 
-        return redirect(url_for('admin.admin'))
+    return render_template('pages/admin_editar_usuario.html', user=user)
 
-    return render_template('edit_user.html', user=user)
 
-# EXCLUIR
-@bp.route('/admin/delete/<int:id>')
+@bp.route('/admin/usuario/deletar/<int:id>')
 @admin_required
-def delete(id):
-    # impede excluir a si mesmo
+def deletar_usuario_view(id):
     if session['user_id'] == id:
-        return "Você não pode excluir a si mesmo"
+        flash('Você não pode excluir a si mesmo.')
+        return redirect(url_for('admin.painel'))
+    deletar_usuario(id)
+    flash('Usuário excluído.')
+    return redirect(url_for('admin.painel'))
 
-    delete_user(id)
-    return redirect(url_for('admin.admin'))
+
+# ── Produtos ───────────────────────────────────────────────────────────────────
+
+@bp.route('/admin/produtos')
+@admin_required
+def admin_produtos():
+    busca     = request.args.get('q', '')
+    categoria = request.args.get('categoria')
+    produtos  = get_todos_produtos(categoria_nome=categoria, busca=busca)
+    categorias = get_todas_categorias()
+    return render_template(
+        'pages/admin_produtos.html',
+        produtos=produtos,
+        categorias=categorias,
+        busca=busca,
+        categoria_ativa=categoria
+    )
+
+
+@bp.route('/admin/produto/novo', methods=['GET', 'POST'])
+@admin_required
+def novo_produto():
+    categorias = get_todas_categorias()
+
+    if request.method == 'POST':
+        nome                 = request.form.get('nome', '').strip()
+        descricao            = request.form.get('descricao', '').strip()
+        especificacao_tecnica = request.form.get('especificacao_tecnica', '').strip()
+        preco                = float(request.form.get('preco', 0))
+        estoque              = int(request.form.get('estoque', 0))
+        id_categoria         = int(request.form.get('id_categoria', 0))
+        status_prod          = request.form.get('status_prod', 'ativo')
+        files                = request.files.getlist('imagens')
+
+        id_novo = criar_produto(
+            nome, descricao, especificacao_tecnica,
+            preco, estoque, id_categoria, status_prod
+        )
+
+        for file in files:
+            if file and file.filename:
+                ext      = file.filename.rsplit('.', 1)[-1]
+                filename = f"{uuid.uuid4()}.{ext}"
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                adicionar_imagem_produto(id_novo, filename)
+
+        flash('Produto criado com sucesso!')
+        return redirect(url_for('admin.admin_produtos'))
+
+    return render_template('pages/admin_produto_form.html', produto=None, categorias=categorias)
+
+
+@bp.route('/admin/produto/editar/<int:id_produto>', methods=['GET', 'POST'])
+@admin_required
+def editar_produto(id_produto):
+    prod       = get_produto_por_id(id_produto)
+    categorias = get_todas_categorias()
+
+    if not prod:
+        return "Produto não encontrado", 404
+
+    if request.method == 'POST':
+        nome                 = request.form.get('nome', '').strip()
+        descricao            = request.form.get('descricao', '').strip()
+        especificacao_tecnica = request.form.get('especificacao_tecnica', '').strip()
+        preco                = float(request.form.get('preco', 0))
+        estoque              = int(request.form.get('estoque', 0))
+        id_categoria         = int(request.form.get('id_categoria', 0))
+        status_prod          = request.form.get('status_prod', 'ativo')
+        files                = request.files.getlist('imagens')
+
+        atualizar_produto(
+            id_produto, nome, descricao, especificacao_tecnica,
+            preco, estoque, id_categoria, status_prod
+        )
+
+        for file in files:
+            if file and file.filename:
+                ext      = file.filename.rsplit('.', 1)[-1]
+                filename = f"{uuid.uuid4()}.{ext}"
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                adicionar_imagem_produto(id_produto, filename)
+
+        flash('Produto atualizado!')
+        return redirect(url_for('admin.admin_produtos'))
+
+    return render_template('pages/admin_produto_form.html', produto=prod, categorias=categorias)
+
+
+@bp.route('/admin/produto/deletar/<int:id_produto>')
+@admin_required
+def deletar_produto_view(id_produto):
+    deletar_produto(id_produto)
+    flash('Produto excluído.')
+    return redirect(url_for('admin.admin_produtos'))

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Meus Dados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main>
+        <section class="perfil_container" style="align-items:flex-start; justify-content:center;">
+            <div class="cadastro_box" style="max-width:560px; width:100%;">
+                <h2>Meus Dados</h2>
+
+                {% with msgs = get_flashed_messages() %}
+                {% if msgs %}
+                <ul style="color:var(--cor-sucesso); margin-bottom:12px; list-style:none;">
+                    {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+
+                <form class="cadastro_form" method="POST"
+                      action="{{ url_for('user.perfil_dados') }}"
+                      enctype="multipart/form-data">
+
+                    <div class="cadastro_campo">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome"
+                               value="{{ user.nome }}" required>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email"
+                               value="{{ user.email }}" required>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone"
+                               value="{{ user.telefone }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="cpf">CPF</label>
+                        <input type="text" value="{{ user.cpf }}" disabled
+                               style="opacity:0.6; cursor:not-allowed;">
+                        <span style="font-size:12px; color:var(--cor-primaria); opacity:0.7;">
+                            O CPF não pode ser alterado.
+                        </span>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="foto">Foto de perfil</label>
+                        {% if user.foto and user.foto != 'default.png' %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.foto) }}"
+                             alt="Foto atual" style="width:60px; height:60px;
+                             border-radius:50%; object-fit:cover; margin-bottom:8px;">
+                        {% endif %}
+                        <input type="file" id="foto" name="foto" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn_cadastrar">Salvar Alterações</button>
+                </form>
+
+                <p style="margin-top:16px; text-align:center;">
+                    <a href="{{ url_for('user.perfil') }}"
+                       style="color:var(--cor-destaque); font-weight:bold;">
+                        ← Voltar ao perfil
+                    </a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+</body>
+</html>

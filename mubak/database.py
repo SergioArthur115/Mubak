@@ -42,10 +42,12 @@ def init_db():
             id_produto INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             nome varchar(50) NOT NULL,
             descricao varchar(100) NOT NULL,
-            especificacao_tecncica varchar(100) NOT NULL,
+            especificacao_tecnica varchar(100) NOT NULL,
             preco float NOT NULL,
             estoque INT NOT NULL,
-            status_prod varchar(50) NOT NULL
+            status_prod varchar(50) NOT NULL,
+            id_categoria INT,
+            FOREIGN KEY(id_categoria) REFERENCES categoria(id_categoria)
         );
 
         CREATE TABLE IF NOT EXISTS cupom(
@@ -59,7 +61,7 @@ def init_db():
 
         CREATE TABLE IF NOT EXISTS imagem_produto(
             id_imagem INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            imagem longblob NOT NULL,
+            imagem varchar NOT NULL,
             id_produto INT NOT NULL,
             FOREIGN KEY(id_produto) REFERENCES produto(id_produto)
         );
@@ -77,87 +79,189 @@ def init_db():
             FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
         );
 
-        CREATE TABLE IF NOT EXISTS pedido (
+        CREATE TABLE IF NOT EXISTS pedido(
             id_pedido INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            id_usuario INT not null,
-            id_endereco INT not null,
-            data_pedido DATE not null,
-            valor_total DECIMAL(10, 2) not null,
-            status_pedido VARCHAR(50) not null,
-            FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-            FOREIGN KEY (id_endereco) REFERENCES endereco(id_endereco)
+            id_usuario INT NOT NULL,
+            id_endereco INT NOT NULL,
+            data_pedido DATE NOT NULL,
+            valor_total DECIMAL(10,2) NOT NULL,
+            status_pedido VARCHAR(50) NOT NULL,
+            FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
+            FOREIGN KEY(id_endereco) REFERENCES endereco(id_endereco)
         );
-  
-        CREATE TABLE IF NOT EXISTS item_carrinho (
+
+        CREATE TABLE IF NOT EXISTS item_carrinho(
             id_item_carrinho INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            id_usuario INT not null,
-            id_produto INT not null,
-            quantidade INT not null,
-            data_criacao DATE not null,
-            preco_unitario float not null,
-            FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-            FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
+            id_usuario INT NOT NULL,
+            id_produto INT NOT NULL,
+            quantidade INT NOT NULL,
+            data_criacao DATE NOT NULL,
+            preco_unitario float NOT NULL,
+            FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
+            FOREIGN KEY(id_produto) REFERENCES produto(id_produto)
         );
 
-        CREATE TABLE IF NOT EXISTS item_pedido (
+        CREATE TABLE IF NOT EXISTS item_pedido(
             id_item_pedido INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            id_pedido INT not null,
-            id_produto INT not null,
-            quantidade INT not null,
-            preco_unitario DECIMAL(10, 2) not null,
-            FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido),
-            FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
+            id_pedido INT NOT NULL,
+            id_produto INT NOT NULL,
+            quantidade INT NOT NULL,
+            preco_unitario DECIMAL(10,2) NOT NULL,
+            FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido),
+            FOREIGN KEY(id_produto) REFERENCES produto(id_produto)
         );
 
-        CREATE TABLE IF NOT EXISTS pagamento (
+        CREATE TABLE IF NOT EXISTS pagamento(
             id_pagamento INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            id_pedido INT not null,
-            metodo VARCHAR(50) not null,
-            data_pagamento DATE not null,
-            valor_pago DECIMAL(10, 2) not null,
-            status_pagamento VARCHAR(50) not null,
-            detalhes VARCHAR(100) not null,
-            FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido)
+            id_pedido INT NOT NULL,
+            metodo VARCHAR(50) NOT NULL,
+            data_pagamento DATE NOT NULL,
+            valor_pago DECIMAL(10,2) NOT NULL,
+            status_pagamento VARCHAR(50) NOT NULL,
+            detalhes VARCHAR(100) NOT NULL,
+            FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido)
         );
 
-        CREATE TABLE IF NOT EXISTS notificacao (
+        CREATE TABLE IF NOT EXISTS notificacao(
             id_notificacao INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            id_usuario INT not null,
-            mensagem VARCHAR(255) not null,
-            data_notificacao DATE not null,
-            status_notificacao VARCHAR(50) not null,
-            tipo VARCHAR(50) not null,
-            assunto VARCHAR(50) not null,
-            FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+            id_usuario INT NOT NULL,
+            mensagem VARCHAR(255) NOT NULL,
+            data_notificacao DATE NOT NULL,
+            status_notificacao VARCHAR(50) NOT NULL,
+            tipo VARCHAR(50) NOT NULL,
+            assunto VARCHAR(50) NOT NULL,
+            FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
         );
     """)
 
-    conn.execute(
-        """
-        INSERT OR IGNORE INTO perfil (id_perfil, tipo)
-        VALUES (1, ?)
-    """,
-        ("Admin",),
-    )
+    # Perfis padrão
+    conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (1, 'Admin')")
+    conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (2, 'Usuario')")
 
-    conn.execute(
-        """
-        INSERT OR IGNORE INTO perfil (id_perfil, tipo)
-        VALUES (2, ?)
-    """,
-        ("Usuario",),
-    )
+    # Categorias padrão
+    categorias = [
+        ("Peças", "Componentes de hardware"),
+        ("Computadores", "Desktops e workstations"),
+        ("Laptops", "Notebooks e ultrabooks"),
+        ("Smartphones", "Celulares e acessórios"),
+        ("Monitores", "Telas e displays"),
+        ("Acessórios", "Periféricos e acessórios"),
+    ]
+    for nome, desc in categorias:
+        conn.execute(
+            "INSERT OR IGNORE INTO categoria (nome, descricao) VALUES (?,?)",
+            (nome, desc),
+        )
 
+    produtos_exemplo = [
+        # Categoria 1: Peças
+        (
+            1,
+            "Placa de Vídeo RTX 4060",
+            "Placa de vídeo com Ray Tracing e 8GB GDDR6",
+            "8GB GDDR6, 128-bit, DLSS 3.0",
+            2199.00,
+            10,
+            "Ativo",
+            1,
+        ),
+        (
+            2,
+            "SSD NVMe 1TB",
+            "Armazenamento de alta velocidade para PC e Laptop",
+            "Leitura 3500MB/s, Gravação 3000MB/s, PCIe Gen3",
+            420.00,
+            25,
+            "Ativo",
+            1,
+        ),
+        # Categoria 2: Computadores
+        (
+            3,
+            "PC Gamer Mubak Alpha",
+            "Desktop completo para jogos e lives",
+            "Intel i5, 16GB RAM, RTX 3050, SSD 512GB",
+            3899.90,
+            5,
+            "Ativo",
+            2,
+        ),
+        # Categoria 3: Laptops
+        (
+            4,
+            "Notebook UltraBook Pro",
+            "Laptop leve e potente para trabalho e estudos",
+            "Tela 14' IPS, AMD Ryzen 7, 16GB RAM, SSD 1TB",
+            4199.00,
+            8,
+            "Ativo",
+            3,
+        ),
+        # Categoria 4: Smartphones
+        (
+            5,
+            "Smartphone Mubak Phone Z",
+            "Celular com câmera tripla e bateria de longa duração",
+            "Tela 6.7', 128GB, Câmera 50MP, 5G",
+            1799.00,
+            15,
+            "Ativo",
+            4,
+        ),
+        # Categoria 5: Monitores
+        (
+            6,
+            "Monitor Gamer 24' 144Hz",
+            "Tela Full HD com alta taxa de atualização",
+            "Painel VA, 1ms de resposta, HDMI/DisplayPort",
+            899.90,
+            12,
+            "Ativo",
+            5,
+        ),
+        # Categoria 6: Acessórios
+        (
+            7,
+            "Teclado Mecânico RGB",
+            "Teclado gamer switch azul com iluminação",
+            "Layout ABNT2, Switch Blue, Anti-ghosting",
+            189.90,
+            30,
+            "Ativo",
+            6,
+        ),
+        (
+            8,
+            "Mouse Gamer Óptico",
+            "Mouse ergonômico com ajuste de DPI",
+            "Até 7200 DPI, 6 botões programáveis, RGB",
+            79.90,
+            40,
+            "Ativo",
+            6,
+        ),
+    ]
+
+    for prod in produtos_exemplo:
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO produto (
+                id_produto, nome, descricao, especificacao_tecnica, preco, estoque, status_prod, id_categoria
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+            prod,
+        )
+
+    # Admin padrão
     conn.execute(
-        """
-        INSERT OR IGNORE INTO usuario (nome, email, senha, telefone, cpf, data_nasc, foto, id_perfil)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 1)
-    """,
+        """INSERT OR IGNORE INTO usuario
+           (nome, email, senha, telefone, cpf, data_nasc, foto, id_perfil)
+           VALUES (?,?,?,?,?,?,?,1)""",
         (
             "Admin",
             "admin@gmail.com",
             generate_password_hash("123456"),
-            "34038245004",
+            "00000000000",
             "111.111.111-11",
             "1995-05-01",
             "temp.png",

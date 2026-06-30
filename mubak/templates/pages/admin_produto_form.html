@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - {{ 'Editar' if produto else 'Novo' }} Produto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main>
+        <section class="perfil_container" style="align-items:flex-start; justify-content:center;">
+            <div class="cadastro_box" style="max-width:600px; width:100%;">
+                <h2>{{ 'Editar Produto' if produto else 'Novo Produto' }}</h2>
+
+                <form class="cadastro_form" method="POST"
+                      action="{{ url_for('admin.editar_produto', id_produto=produto.id_produto) if produto else url_for('admin.novo_produto') }}"
+                      enctype="multipart/form-data">
+
+                    <div class="cadastro_campo">
+                        <label for="nome">Nome do Produto</label>
+                        <input type="text" id="nome" name="nome" required
+                               value="{{ produto.nome if produto else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" id="descricao" name="descricao" required
+                               value="{{ produto.descricao if produto else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="especificacao_tecnica">Especificação Técnica</label>
+                        <input type="text" id="especificacao_tecnica" name="especificacao_tecnica"
+                               value="{{ produto.especificacao_tecnica if produto else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="preco">Preço (R$)</label>
+                        <input type="number" id="preco" name="preco"
+                               step="0.01" min="0" required
+                               value="{{ produto.preco if produto else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="estoque">Estoque</label>
+                        <input type="number" id="estoque" name="estoque"
+                               min="0" required
+                               value="{{ produto.estoque if produto else 0 }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="id_categoria">Categoria</label>
+                        <select id="id_categoria" name="id_categoria"
+                                style="padding:10px 14px; border:2px solid var(--cor-primaria);
+                                       border-radius:var(--borda-radius); font-size:15px;">
+                            {% for cat in categorias %}
+                            <option value="{{ cat.id_categoria }}"
+                                {{ 'selected' if produto and produto.id_categoria == cat.id_categoria }}>
+                                {{ cat.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="status_prod">Status</label>
+                        <select id="status_prod" name="status_prod"
+                                style="padding:10px 14px; border:2px solid var(--cor-primaria);
+                                       border-radius:var(--borda-radius); font-size:15px;">
+                            <option value="ativo"    {{ 'selected' if not produto or produto.status_prod=='ativo' }}>Ativo</option>
+                            <option value="inativo"  {{ 'selected' if produto and produto.status_prod=='inativo' }}>Inativo</option>
+                            <option value="esgotado" {{ 'selected' if produto and produto.status_prod=='esgotado' }}>Esgotado</option>
+                        </select>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="imagens">Imagens do Produto</label>
+                        <input type="file" id="imagens" name="imagens"
+                               accept="image/*" multiple>
+                        <span style="font-size:12px; color:var(--cor-primaria); opacity:0.7;">
+                            Selecione uma ou mais imagens.
+                        </span>
+                    </div>
+
+                    <button type="submit" class="btn_cadastrar">
+                        {{ 'Salvar Alterações' if produto else 'Criar Produto' }}
+                    </button>
+                </form>
+
+                <p style="margin-top:16px; text-align:center;">
+                    <a href="{{ url_for('admin.admin_produtos') }}"
+                       style="color:var(--cor-destaque); font-weight:bold;">
+                        ← Voltar para produtos
+                    </a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    {% include 'partials/footer.html' %}
+</body>
+</html>

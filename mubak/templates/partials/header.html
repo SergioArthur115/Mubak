@@ -1,0 +1,43 @@
+{# templates/partials/header.html #}
+<header class="header">
+    <figure class="header_logo">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/mubak_logo.png') }}" alt="Logo Mubak">
+        </a>
+    </figure>
+
+    <section class="header_barra_pesquisa">
+        <form action="{{ url_for('produto.pesquisar') }}" method="GET">
+            <input type="search" name="q" placeholder="O que você procura?" value="{{ busca|default('') }}"
+                aria-label="Pesquisar">
+            <button type="submit">Pesquisar</button>
+        </form>
+    </section>
+
+    <div class="header_login">
+        {% if session.user_id %}
+        <a href="{{ url_for('user.perfil') }}" title="{{ session.user_nome }}">
+            <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Meu perfil">
+        </a>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}">
+            <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Login">
+        </a>
+        {% endif %}
+    </div>
+</header>
+
+<nav class="menu_principal">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Início</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Peças') }}">Peças</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Computadores') }}">Computadores</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Laptops') }}">Laptops</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Smartphones') }}">Smartphones</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Monitores') }}">Monitores</a></li>
+        <li><a href="{{ url_for('produto.produtos', categoria='Acessórios') }}">Acessórios</a></li>
+        {% if session.user_id %}
+        <li><a href="{{ url_for('carrinho.carrinho') }}">Carrinho</a></li>
+        {% endif %}
+    </ul>
+</nav>
