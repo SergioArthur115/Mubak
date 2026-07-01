@@ -9,42 +9,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
-    <style>
-        .finalizar_container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-        .finalizar_secao {
-            border: 2px solid var(--cor-primaria); border-radius: var(--borda-radius);
-            padding: 24px; margin-bottom: 24px;
-            background: rgba(255,255,255,0.15);
-        }
-        .finalizar_secao h2 { color: var(--cor-primaria); margin-bottom: 16px;
-            border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; }
-        .endereco_opcao { display: flex; align-items: flex-start; gap: 12px;
-            padding: 12px; border: 1px solid rgba(10,35,50,0.2);
-            border-radius: 6px; margin-bottom: 10px; cursor: pointer; }
-        .endereco_opcao:has(input:checked) { border-color: var(--cor-primaria); background: rgba(10,35,50,0.08); }
-        .metodo_opcao { display: flex; align-items: center; gap: 10px;
-            padding: 10px; margin-bottom: 8px; cursor: pointer; }
-        .resumo_item { display: flex; justify-content: space-between;
-            padding: 8px 0; border-bottom: 1px solid rgba(10,35,50,0.1);
-            color: var(--cor-primaria); font-size: 15px; }
-        .btn_confirmar { width: 100%; padding: 14px; background: var(--cor-destaque);
-            color: var(--cor-branca); border: none; border-radius: var(--borda-radius);
-            font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 16px; }
-        .btn_confirmar:hover { background: #0056b3; }
-        .sem_endereco { color: var(--cor-perigo); font-size: 14px; }
-        .link_add { color: var(--cor-destaque); font-weight: bold; text-decoration: underline; }
-    </style>
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <div class="finalizar_container">
-            <h2 style="color:var(--cor-primaria); margin-bottom:24px;">Finalizar Compra</h2>
-
+            <h2 class="finalizar_titulo">Finalizar Compra</h2>
             <form method="POST" action="{{ url_for('carrinho.finalizar') }}">
-
-                <!-- Endereço de entrega -->
                 <div class="finalizar_secao">
                     <h2>Endereço de Entrega</h2>
                     {% if enderecos %}
@@ -53,13 +24,12 @@
                         <input type="radio" name="id_endereco"
                                value="{{ end.id_endereco }}"
                                {{ 'checked' if end.principal or loop.first }}>
-                        <div>
-                            <strong>{{ end.rua if end.rua else '' }}
-                                Nº {{ end.numero }} — {{ end.bairro }}</strong><br>
+                        <div class="endereco_opcao_texto">
+                            <strong>Nº {{ end.numero }} — {{ end.bairro }}</strong><br>
                             {{ end.cidade }}/{{ end.estado }} — CEP {{ end.cep }}
                             {% if end.complemento %} — {{ end.complemento }}{% endif %}
                             {% if end.principal %}
-                            <span style="color:var(--cor-sucesso); font-size:12px;"> ✔ Principal</span>
+                            <span class="endereco_principal_badge"> ✔ Principal</span>
                             {% endif %}
                         </div>
                     </label>
@@ -73,8 +43,6 @@
                     </p>
                     {% endif %}
                 </div>
-
-                <!-- Método de pagamento -->
                 <div class="finalizar_secao">
                     <h2>Método de Pagamento</h2>
                     <label class="metodo_opcao">
@@ -90,8 +58,6 @@
                         📄 Boleto Bancário
                     </label>
                 </div>
-
-                <!-- Resumo -->
                 <div class="finalizar_secao">
                     <h2>Resumo do Pedido</h2>
                     {% for item in itens %}
@@ -100,19 +66,17 @@
                         <span>R$ {{ "%.2f"|format(item.quantidade * item.preco_unitario)|replace(".", ",") }}</span>
                     </div>
                     {% endfor %}
-                    <div class="resumo_item" style="font-size:18px; font-weight:bold; border:none; margin-top:8px;">
+                    <div class="resumo_total">
                         <span>Total</span>
                         <span>R$ {{ "%.2f"|format(total)|replace(".", ",") }}</span>
                     </div>
                 </div>
-
                 {% if enderecos %}
                 <button type="submit" class="btn_confirmar">Confirmar Pedido</button>
                 {% endif %}
             </form>
         </div>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.carrinho_model import (
     get_carrinho_usuario, adicionar_ao_carrinho,
     atualizar_quantidade, remover_do_carrinho,

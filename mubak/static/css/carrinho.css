@@ -1,7 +1,6 @@
 /* =========================================
-   PÁGINA DE CARRINHO — carrinho.html
+   PÁGINAS DE CARRINHO E FINALIZAR
    ========================================= */
-
 .carrinho_container {
     max-width: 1100px;
     margin: 30px auto;
@@ -12,7 +11,6 @@
     align-items: start;
 }
 
-/* --- Lista de itens --- */
 .carrinho_lista {
     display: flex;
     flex-direction: column;
@@ -26,6 +24,7 @@
     margin-bottom: 8px;
     border-bottom: 2px solid var(--cor-primaria);
     padding-bottom: 8px;
+    width: auto;
 }
 
 .carrinho_item {
@@ -90,6 +89,11 @@
     align-items: flex-end;
 }
 
+.carrinho_item_subtotal {
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+
 .btn_remover {
     background: transparent;
     border: 2px solid var(--cor-perigo);
@@ -100,6 +104,7 @@
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .btn_remover:hover {
@@ -120,7 +125,7 @@
     text-decoration: underline;
 }
 
-/* --- Resumo do pedido --- */
+/* --- Resumo --- */
 .carrinho_resumo {
     background-color: rgba(255, 255, 255, 0.15);
     border: 2px solid var(--cor-primaria);
@@ -140,6 +145,7 @@
     border-bottom: 2px solid var(--cor-primaria);
     padding-bottom: 8px;
     margin-bottom: 4px;
+    width: auto;
 }
 
 .resumo_linha {
@@ -168,6 +174,8 @@
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 6px;
+    display: block;
+    text-align: center;
 }
 
 .btn_finalizar:hover {
@@ -184,6 +192,7 @@
     cursor: pointer;
     transition: all 0.3s;
     text-align: center;
+    display: block;
 }
 
 .btn_continuar_comprando:hover {
@@ -191,23 +200,116 @@
     color: var(--cor-branca);
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-    .carrinho_container {
-        grid-template-columns: 1fr;
-    }
+/* --- Finalizar compra --- */
+.finalizar_container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
 
-    .carrinho_resumo {
-        position: static;
-    }
+.finalizar_titulo {
+    color: var(--cor-primaria);
+    margin-bottom: 24px;
+}
 
-    .carrinho_item {
-        grid-template-columns: 80px 1fr;
-    }
+.finalizar_secao {
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.15);
+}
 
-    .carrinho_item_acoes {
-        grid-column: 1 / -1;
-        flex-direction: row;
-        justify-content: flex-end;
-    }
+.finalizar_secao h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 8px;
+    text-align: left;
+    width: auto;
+}
+
+.endereco_opcao {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(10, 35, 50, 0.2);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.endereco_opcao:has(input:checked) {
+    border-color: var(--cor-primaria);
+    background: rgba(10, 35, 50, 0.08);
+}
+
+.endereco_opcao_texto {
+    color: var(--cor-primaria);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.endereco_principal_badge {
+    color: var(--cor-sucesso);
+    font-size: 12px;
+}
+
+.metodo_opcao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: var(--cor-primaria);
+    font-size: 15px;
+}
+
+.resumo_item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(10, 35, 50, 0.1);
+    color: var(--cor-primaria);
+    font-size: 15px;
+}
+
+.resumo_total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 8px;
+    color: var(--cor-primaria);
+}
+
+.btn_confirmar {
+    width: 100%;
+    padding: 14px;
+    background: var(--cor-destaque);
+    color: var(--cor-branca);
+    border: none;
+    border-radius: var(--borda-radius);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn_confirmar:hover {
+    background: #0056b3;
+}
+
+.sem_endereco {
+    color: var(--cor-perigo);
+    font-size: 14px;
+}
+
+.link_add {
+    color: var(--cor-destaque);
+    font-weight: bold;
+    text-decoration: underline;
 }

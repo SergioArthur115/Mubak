@@ -9,10 +9,10 @@ bp = Blueprint('produto', __name__)
 
 @bp.route('/produtos')
 def produtos():
-    categoria    = request.args.get('categoria')
-    preco_min    = request.args.get('preco_min')
-    preco_max    = request.args.get('preco_max')
-    busca        = request.args.get('q')
+    categoria = request.args.get('categoria')
+    preco_min = request.args.get('preco_min')
+    preco_max = request.args.get('preco_max')
+    busca     = request.args.get('q')
 
     lista = get_todos_produtos(
         categoria_nome=categoria,
@@ -33,7 +33,7 @@ def produtos():
 
 @bp.route('/produto/<int:id_produto>')
 def produto(id_produto):
-    prod   = get_produto_por_id(id_produto)
+    prod = get_produto_por_id(id_produto)
     if not prod:
         return "Produto não encontrado", 404
 

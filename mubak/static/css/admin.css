@@ -1,0 +1,217 @@
+/* =========================================
+   PÁGINAS ADMINISTRATIVAS — admin*.html
+   ========================================= */
+.admin_container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.admin_topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.admin_topo h2 {
+    color: var(--cor-primaria);
+    width: auto;
+    text-align: left;
+    margin: 0;
+}
+
+.admin_acoes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* --- Tabs --- */
+.admin_tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab_link {
+    padding: 10px 20px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.tab_link:hover,
+.tab_link.ativo {
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+/* --- Formulário de busca --- */
+.admin_busca_form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+
+.admin_busca_form input[type="search"],
+.admin_busca_form input[type="text"],
+.admin_busca_form select {
+    padding: 8px 14px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    background: var(--cor-branca);
+}
+
+.admin_busca_label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--cor-primaria);
+    font-weight: bold;
+}
+
+/* --- Botões admin --- */
+.btn_admin {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s;
+}
+
+.btn_admin:hover {
+    opacity: 0.85;
+}
+
+.btn_pesquisar { background: var(--cor-primaria); color: var(--cor-branca); }
+.btn_novo      { background: var(--cor-sucesso);  color: var(--cor-branca); }
+.btn_editar    { background: var(--cor-destaque);  color: var(--cor-branca); }
+.btn_excluir   { background: var(--cor-perigo);    color: var(--cor-branca); }
+.btn_sair      { background: var(--cor-perigo);    color: var(--cor-branca); }
+
+/* --- Tabela --- */
+.admin_tabela {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    overflow: hidden;
+}
+
+.admin_tabela th {
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.admin_tabela td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(10, 35, 50, 0.1);
+    font-size: 14px;
+    color: var(--cor-primaria);
+    vertical-align: middle;
+}
+
+.admin_tabela tr:last-child td {
+    border-bottom: none;
+}
+
+.admin_tabela tr:hover td {
+    background: rgba(10, 35, 50, 0.05);
+}
+
+.admin_tabela_acoes {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* --- Paginação --- */
+.paginacao {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.paginacao a,
+.paginacao span {
+    padding: 6px 14px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.paginacao a:hover {
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+.paginacao .atual {
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+/* --- Thumbnail de produto --- */
+.thumb_prod {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+/* --- Avatar na tabela de usuários --- */
+.thumb_usuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--cor-primaria);
+    display: block;
+}
+
+/* --- Flash messages no painel --- */
+.admin_flash {
+    list-style: none;
+    margin-bottom: 16px;
+}
+
+.admin_flash li {
+    padding: 8px 12px;
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    color: var(--cor-sucesso);
+    background: rgba(39, 174, 96, 0.1);
+    margin-bottom: 4px;
+}
+
+/* --- Formulário de usuário (admin) --- */
+.admin_form_container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+}

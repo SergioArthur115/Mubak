@@ -18,6 +18,8 @@ def perfil():
 @bp.route('/perfil/dados', methods=['GET', 'POST'])
 @login_required
 def perfil_dados():
+    # Usuário comum só pode EDITAR seus próprios dados.
+    # Não existe (propositalmente) nenhuma rota de exclusão de conta para o usuário.
     id_usuario = session['user_id']
     user = get_usuario_por_id(id_usuario)
 
@@ -35,6 +37,7 @@ def perfil_dados():
 
         atualizar_usuario(id_usuario, nome, email, telefone, filename)
         session['user_nome'] = nome
+        session['user_foto'] = filename
         flash('Dados atualizados com sucesso!')
         return redirect(url_for('user.perfil_dados'))
 

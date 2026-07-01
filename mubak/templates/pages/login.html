@@ -12,20 +12,17 @@
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <section class="login_container">
             <div class="login_box">
                 <h2>Entrar na sua conta</h2>
-
                 {% with msgs = get_flashed_messages() %}
                 {% if msgs %}
-                <ul class="flash_msgs" style="color:var(--cor-perigo); margin-bottom:12px; list-style:none;">
+                <ul class="flash_msgs erro">
                     {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
                 </ul>
                 {% endif %}
                 {% endwith %}
-
                 <form class="login_form" method="POST" action="{{ url_for('auth.login') }}">
                     <div class="login_campo">
                         <label for="email">E-mail:</label>
@@ -42,15 +39,12 @@
                         <a href="#" class="link_esqueci_senha">Esqueci minha senha</a>
                     </div>
                     <div class="login_cadastro">
-                        <p>Não tem uma conta?
-                            <a href="{{ url_for('auth.register') }}">Cadastre-se</a>
-                        </p>
+                        <p>Não tem uma conta? <a href="{{ url_for('auth.register') }}">Cadastre-se</a></p>
                     </div>
                 </form>
             </div>
         </section>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

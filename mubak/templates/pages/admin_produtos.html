@@ -1,147 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mubak - Admin Produtos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
-    <style>
-        .admin_container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .admin_topo {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .admin_topo h2 {
-            color: var(--cor-primaria);
-        }
-
-        .admin_busca_form {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .admin_busca_form input[type="search"],
-        .admin_busca_form select {
-            padding: 8px 14px;
-            border: 2px solid var(--cor-primaria);
-            border-radius: var(--borda-radius);
-            font-size: 14px;
-        }
-
-        .btn_admin {
-            padding: 8px 16px;
-            border: none;
-            border-radius: var(--borda-radius);
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn_pesquisar {
-            background: var(--cor-primaria);
-            color: var(--cor-branca);
-        }
-
-        .btn_novo {
-            background: var(--cor-sucesso);
-            color: var(--cor-branca);
-        }
-
-        .btn_editar {
-            background: var(--cor-destaque);
-            color: var(--cor-branca);
-        }
-
-        .btn_excluir {
-            background: var(--cor-perigo);
-            color: var(--cor-branca);
-        }
-
-        .admin_tabela {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid var(--cor-primaria);
-            border-radius: var(--borda-radius);
-            overflow: hidden;
-        }
-
-        .admin_tabela th {
-            background: var(--cor-primaria);
-            color: var(--cor-branca);
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .admin_tabela td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(10, 35, 50, 0.1);
-            font-size: 14px;
-            color: var(--cor-primaria);
-        }
-
-        .admin_tabela tr:last-child td {
-            border-bottom: none;
-        }
-
-        .admin_tabela tr:hover td {
-            background: rgba(10, 35, 50, 0.05);
-        }
-
-        .admin_tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab_link {
-            padding: 10px 20px;
-            border: 2px solid var(--cor-primaria);
-            border-radius: var(--borda-radius);
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--cor-primaria);
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .tab_link:hover,
-        .tab_link.ativo {
-            background: var(--cor-primaria);
-            color: var(--cor-branca);
-        }
-
-        .thumb_prod {
-            width: 48px;
-            height: 48px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-    </style>
 </head>
-
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <div class="admin_container">
             <div class="admin_topo">
@@ -158,27 +28,34 @@
 
             {% with msgs = get_flashed_messages() %}
             {% if msgs %}
-            <ul style="color:var(--cor-sucesso); margin-bottom:12px; list-style:none;">
+            <ul class="admin_flash">
                 {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
             </ul>
             {% endif %}
             {% endwith %}
 
-            <!-- Filtros -->
-            <form class="admin_busca_form" method="GET" action="{{ url_for('admin.admin_produtos') }}">
-                <input type="search" name="q" placeholder="Buscar produto..." value="{{ busca }}">
-                <select name="categoria">
-                    <option value="">Todas as categorias</option>
-                    {% for cat in categorias %}
-                    <option value="{{ cat.nome }}" {{ 'selected' if categoria_ativa==cat.nome }}>
-                        {{ cat.nome }}
-                    </option>
-                    {% endfor %}
-                </select>
+            <form class="admin_busca_form" method="GET"
+                  action="{{ url_for('admin.admin_produtos') }}">
+                <label class="admin_busca_label">
+                    Nome
+                    <input type="search" name="q" placeholder="Buscar produto..."
+                           value="{{ busca }}">
+                </label>
+                <label class="admin_busca_label">
+                    Categoria
+                    <select name="categoria">
+                        <option value="">Todas as categorias</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.nome }}"
+                            {{ 'selected' if categoria_ativa == cat.nome }}>
+                            {{ cat.nome }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </label>
                 <button type="submit" class="btn_admin btn_pesquisar">Filtrar</button>
             </form>
 
-            <!-- Tabela -->
             <table class="admin_tabela">
                 <thead>
                     <tr>
@@ -198,11 +75,11 @@
                         <td>{{ prod.id_produto }}</td>
                         <td>
                             {% if prod.imagem %}
-                            <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}" class="thumb_prod"
-                                alt="{{ prod.nome }}">
+                            <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                                 class="thumb_prod" alt="{{ prod.nome }}">
                             {% else %}
-                            <img src="{{ url_for('static', filename='images/temp.png') }}" class="thumb_prod"
-                                alt="sem imagem">
+                            <img src="{{ url_for('static', filename='images/temp.png') }}"
+                                 class="thumb_prod" alt="sem imagem">
                             {% endif %}
                         </td>
                         <td>{{ prod.nome }}</td>
@@ -210,26 +87,24 @@
                         <td>R$ {{ "%.2f"|format(prod.preco)|replace(".", ",") }}</td>
                         <td>{{ prod.estoque }}</td>
                         <td>{{ prod.status_prod }}</td>
-                        <td style="display:flex; gap:6px;">
-                            <a href="{{ url_for('admin.editar_produto', id_produto=prod.id_produto) }}"
-                                class="btn_admin btn_editar">Editar</a>
-                            <a href="{{ url_for('admin.deletar_produto_view', id_produto=prod.id_produto) }}"
-                                class="btn_admin btn_excluir"
-                                onclick="return confirm('Excluir este produto?')">Excluir</a>
+                        <td>
+                            <div class="admin_tabela_acoes">
+                                <a href="{{ url_for('admin.editar_produto', id_produto=prod.id_produto) }}"
+                                   class="btn_admin btn_editar">Editar</a>
+                                <a href="{{ url_for('admin.deletar_produto_view', id_produto=prod.id_produto) }}"
+                                   class="btn_admin btn_excluir"
+                                   onclick="return confirm('Excluir este produto?')">Excluir</a>
+                            </div>
                         </td>
                     </tr>
                     {% else %}
-                    <tr>
-                        <td colspan="8">Nenhum produto encontrado.</td>
-                    </tr>
+                    <tr><td colspan="8">Nenhum produto encontrado.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>
-
 </html>

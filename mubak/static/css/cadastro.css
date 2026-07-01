@@ -1,7 +1,6 @@
 /* =========================================
    PÁGINA DE CADASTRO — cadastro.html
    ========================================= */
-
 .cadastro_container {
     display: flex;
     justify-content: center;
@@ -44,7 +43,8 @@
     color: var(--cor-primaria);
 }
 
-.cadastro_campo input {
+.cadastro_campo input,
+.cadastro_campo select {
     padding: 10px 14px;
     border: 2px solid var(--cor-primaria);
     border-radius: var(--borda-radius);
@@ -54,7 +54,8 @@
     transition: border-color 0.3s;
 }
 
-.cadastro_campo input:focus {
+.cadastro_campo input:focus,
+.cadastro_campo select:focus {
     border-color: var(--cor-destaque);
 }
 
@@ -70,6 +71,37 @@
 
 .cadastro_campo.invalido .msg_erro {
     display: block;
+}
+
+.cadastro_campo_row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.cadastro_campo_row input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--cor-primaria);
+}
+
+.campo_desabilitado {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.campo_hint {
+    font-size: 12px;
+    color: var(--cor-primaria);
+    opacity: 0.7;
+}
+
+.campo_foto_preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
 }
 
 .btn_cadastrar {
@@ -100,4 +132,14 @@
     color: var(--cor-destaque);
     font-weight: bold;
     text-decoration: underline;
+}
+
+.form_voltar {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.form_voltar a {
+    color: var(--cor-destaque);
+    font-weight: bold;
 }

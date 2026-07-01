@@ -12,11 +12,8 @@
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <div class="produto_detalhe_container">
-
-            <!-- Topo: imagem + info principal -->
             <div class="produto_detalhe_topo">
                 <div class="produto_detalhe_imagem">
                     {% if imagens %}
@@ -28,8 +25,6 @@
                          src="{{ url_for('static', filename='images/temp.png') }}"
                          alt="{{ produto.nome }}">
                     {% endif %}
-
-                    <!-- Miniaturas (quando há mais de uma imagem) -->
                     {% if imagens|length > 1 %}
                     <div class="produto_miniaturas">
                         {% for img in imagens %}
@@ -41,19 +36,16 @@
                     </div>
                     {% endif %}
                 </div>
-
                 <div class="produto_detalhe_info_principal">
                     <h1 class="produto_nome">{{ produto.nome }}</h1>
                     <p class="produto_preco_detalhe">
                         R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}
                     </p>
-
                     {% if produto.estoque > 0 %}
                     <p class="produto_disponibilidade">✔ Em estoque ({{ produto.estoque }} unid.)</p>
                     {% else %}
-                    <p class="produto_disponibilidade" style="color:var(--cor-perigo);">✖ Fora de estoque</p>
+                    <p class="produto_sem_estoque">✖ Fora de estoque</p>
                     {% endif %}
-
                     {% if session.user_id and produto.estoque > 0 %}
                     <form method="POST"
                           action="{{ url_for('carrinho.adicionar', id_produto=produto.id_produto) }}">
@@ -67,22 +59,16 @@
                         </div>
                     </form>
                     {% elif not session.user_id %}
-                    <p style="margin-top:14px; color:var(--cor-primaria);">
-                        <a href="{{ url_for('auth.login') }}" style="color:var(--cor-destaque); font-weight:bold;">
-                            Faça login
-                        </a> para comprar.
+                    <p class="produto_login_aviso">
+                        <a href="{{ url_for('auth.login') }}">Faça login</a> para comprar.
                     </p>
                     {% endif %}
                 </div>
             </div>
-
-            <!-- Descrição -->
             <div class="produto_detalhe_descricao">
                 <h2>Descrição</h2>
                 <p>{{ produto.descricao }}</p>
             </div>
-
-            <!-- Informações técnicas -->
             <div class="produto_detalhe_tecnico">
                 <h2>Informações Técnicas</h2>
                 <table class="tabela_tecnica">
@@ -92,10 +78,8 @@
                     <tr><th>Status</th><td>{{ produto.status_prod }}</td></tr>
                 </table>
             </div>
-
         </div>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

@@ -12,22 +12,17 @@
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <div class="carrinho_container">
-
-            <!-- Lista de itens -->
             <div class="carrinho_lista">
                 <h2>Meu Carrinho</h2>
-
                 {% with msgs = get_flashed_messages() %}
                 {% if msgs %}
-                <ul style="color:var(--cor-sucesso); margin-bottom:12px; list-style:none;">
+                <ul class="flash_msgs sucesso">
                     {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
                 </ul>
                 {% endif %}
                 {% endwith %}
-
                 {% if itens %}
                 {% for item in itens %}
                 <div class="carrinho_item">
@@ -38,14 +33,11 @@
                     <img src="{{ url_for('static', filename='images/temp.png') }}"
                          alt="{{ item.nome }}">
                     {% endif %}
-
                     <div class="carrinho_item_info">
                         <span class="carrinho_item_nome">{{ item.nome }}</span>
                         <span class="carrinho_item_preco">
                             R$ {{ "%.2f"|format(item.preco_unitario)|replace(".", ",") }}
                         </span>
-
-                        <!-- Atualizar quantidade -->
                         <form method="POST"
                               action="{{ url_for('carrinho.atualizar', id_produto=item.id_produto) }}"
                               class="carrinho_item_qtd">
@@ -55,9 +47,8 @@
                                    onchange="this.form.submit()">
                         </form>
                     </div>
-
                     <div class="carrinho_item_acoes">
-                        <span style="font-weight:bold; color:var(--cor-primaria);">
+                        <span class="carrinho_item_subtotal">
                             R$ {{ "%.2f"|format(item.quantidade * item.preco_unitario)|replace(".", ",") }}
                         </span>
                         <a href="{{ url_for('carrinho.remover', id_produto=item.id_produto) }}"
@@ -65,7 +56,6 @@
                     </div>
                 </div>
                 {% endfor %}
-
                 {% else %}
                 <div class="carrinho_vazio">
                     <p>Seu carrinho está vazio.</p>
@@ -73,8 +63,6 @@
                 </div>
                 {% endif %}
             </div>
-
-            <!-- Resumo -->
             <aside class="carrinho_resumo">
                 <h2>Resumo do Pedido</h2>
                 <div class="resumo_linha">
@@ -89,22 +77,17 @@
                     <span>Total</span>
                     <span>R$ {{ "%.2f"|format(total)|replace(".", ",") }}</span>
                 </div>
-
                 {% if itens %}
-                <a href="{{ url_for('carrinho.finalizar') }}" class="btn_finalizar"
-                   style="display:block; text-align:center; text-decoration:none;">
+                <a href="{{ url_for('carrinho.finalizar') }}" class="btn_finalizar">
                     Finalizar Compra
                 </a>
                 {% endif %}
-
                 <a href="{{ url_for('produto.produtos') }}" class="btn_continuar_comprando">
                     Continuar Comprando
                 </a>
             </aside>
-
         </div>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

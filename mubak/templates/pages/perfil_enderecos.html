@@ -10,109 +10,79 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
-    <style>
-        .enderecos_lista { display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
-        .endereco_card {
-            border: 2px solid var(--cor-primaria); border-radius: var(--borda-radius);
-            padding: 16px 20px; background: rgba(255,255,255,0.15);
-            display: flex; justify-content: space-between; align-items: flex-start;
-        }
-        .endereco_card p { color: var(--cor-primaria); font-size: 15px; line-height: 1.6; }
-        .badge_principal {
-            background: var(--cor-sucesso); color: #fff;
-            font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 8px;
-        }
-    </style>
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
-        <section class="perfil_container" style="flex-direction:column; align-items:center;">
-            <div style="width:100%; max-width:640px;">
-                <h2 style="color:var(--cor-primaria); margin-bottom:20px;">Meus Endereços</h2>
-
-                {% with msgs = get_flashed_messages() %}
-                {% if msgs %}
-                <ul style="color:var(--cor-sucesso); margin-bottom:12px; list-style:none;">
-                    {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-
-                <!-- Endereços cadastrados -->
-                <div class="enderecos_lista">
-                    {% for end in enderecos %}
-                    <div class="endereco_card">
-                        <p>
-                            <strong>
-                                Nº {{ end.numero }}, {{ end.bairro }}
-                                {% if end.principal %}
-                                <span class="badge_principal">Principal</span>
-                                {% endif %}
-                            </strong><br>
-                            {{ end.cidade }} / {{ end.estado }} — CEP {{ end.cep }}
-                            {% if end.complemento %}<br>{{ end.complemento }}{% endif %}
-                        </p>
+        <section class="perfil_container_coluna">
+            <h2 class="enderecos_titulo">Meus Endereços</h2>
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+            <ul class="flash_msgs sucesso">
+                {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <div class="enderecos_lista">
+                {% for end in enderecos %}
+                <div class="endereco_card">
+                    <p>
+                        <strong>
+                            Nº {{ end.numero }}, {{ end.bairro }}
+                            {% if end.principal %}
+                            <span class="badge_principal">Principal</span>
+                            {% endif %}
+                        </strong><br>
+                        {{ end.cidade }} / {{ end.estado }} — CEP {{ end.cep }}
+                        {% if end.complemento %}<br>{{ end.complemento }}{% endif %}
+                    </p>
+                </div>
+                {% else %}
+                <p class="perfil_sem_itens">Nenhum endereço cadastrado.</p>
+                {% endfor %}
+            </div>
+            <div class="cadastro_box">
+                <h2>Adicionar Endereço</h2>
+                <form class="cadastro_form" method="POST"
+                      action="{{ url_for('user.perfil_enderecos') }}">
+                    <div class="cadastro_campo">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" name="cep"
+                               placeholder="00000-000" maxlength="9" required>
                     </div>
-                    {% else %}
-                    <p style="color:var(--cor-primaria);">Nenhum endereço cadastrado.</p>
-                    {% endfor %}
-                </div>
-
-                <!-- Formulário novo endereço -->
-                <div class="cadastro_box">
-                    <h2>Adicionar Endereço</h2>
-                    <form class="cadastro_form" method="POST"
-                          action="{{ url_for('user.perfil_enderecos') }}">
-
-                        <div class="cadastro_campo">
-                            <label for="cep">CEP</label>
-                            <input type="text" id="cep" name="cep"
-                                   placeholder="00000-000" maxlength="9" required>
-                        </div>
-                        <div class="cadastro_campo">
-                            <label for="bairro">Bairro</label>
-                            <input type="text" id="bairro" name="bairro" required>
-                        </div>
-                        <div class="cadastro_campo">
-                            <label for="cidade">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" required>
-                        </div>
-                        <div class="cadastro_campo">
-                            <label for="estado">Estado (UF)</label>
-                            <input type="text" id="estado" name="estado" maxlength="2" required>
-                        </div>
-                        <div class="cadastro_campo">
-                            <label for="numero">Número</label>
-                            <input type="text" id="numero" name="numero" required>
-                        </div>
-                        <div class="cadastro_campo">
-                            <label for="complemento">Complemento</label>
-                            <input type="text" id="complemento" name="complemento"
-                                   placeholder="Apto, bloco, etc. (opcional)">
-                        </div>
-                        <div class="cadastro_campo" style="flex-direction:row; align-items:center; gap:10px;">
-                            <input type="checkbox" id="principal" name="principal" value="1">
-                            <label for="principal" style="font-weight:normal;">
-                                Definir como endereço principal
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn_cadastrar">Salvar Endereço</button>
-                    </form>
-                </div>
-
-                <p style="margin-top:16px; text-align:center;">
-                    <a href="{{ url_for('user.perfil') }}"
-                       style="color:var(--cor-destaque); font-weight:bold;">
-                        ← Voltar ao perfil
-                    </a>
-                </p>
+                    <div class="cadastro_campo">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro" required>
+                    </div>
+                    <div class="cadastro_campo">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" required>
+                    </div>
+                    <div class="cadastro_campo">
+                        <label for="estado">Estado (UF)</label>
+                        <input type="text" id="estado" name="estado" maxlength="2" required>
+                    </div>
+                    <div class="cadastro_campo">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" name="numero" required>
+                    </div>
+                    <div class="cadastro_campo">
+                        <label for="complemento">Complemento</label>
+                        <input type="text" id="complemento" name="complemento"
+                               placeholder="Apto, bloco, etc. (opcional)">
+                    </div>
+                    <div class="cadastro_campo cadastro_campo_row">
+                        <input type="checkbox" id="principal" name="principal" value="1">
+                        <label for="principal">Definir como endereço principal</label>
+                    </div>
+                    <button type="submit" class="btn_cadastrar">Salvar Endereço</button>
+                </form>
+            </div>
+            <div class="perfil_voltar">
+                <a href="{{ url_for('user.perfil') }}">← Voltar ao perfil</a>
             </div>
         </section>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

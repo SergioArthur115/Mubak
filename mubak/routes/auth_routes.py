@@ -55,6 +55,7 @@ def login():
         if user and check_password_hash(user['senha'], senha):
             session['user_id'] = user['id_usuario']
             session['user_nome'] = user['nome']
+            session['user_foto'] = user['foto']
             session['is_admin'] = (user['id_perfil'] == 1)
 
             if user['id_perfil'] == 1:

@@ -1,8 +1,5 @@
 /**
- * carrosel.js
- * Carrossel com scroll infinito automático.
- * - Calcula a largura ANTES de duplicar os cards.
- * - Para ao hover no container; retoma ao sair.
+ * carrosel.js — Carrossel infinito automático.
  */
 function iniciarCarrosel(containerId) {
     const container = document.getElementById(containerId);
@@ -11,31 +8,22 @@ function iniciarCarrosel(containerId) {
     const faixa = container.querySelector('.carrosel_faixa');
     if (!faixa) return;
 
-    // Calcula a largura ANTES de duplicar
     const larguraOriginal = faixa.scrollWidth;
-
-    // Duplica os cards para o loop infinito
     faixa.innerHTML += faixa.innerHTML;
 
-    const velocidade = 0.8; // px por frame — aumente para mais rápido
+    const velocidade = 0.8;
     let posicao = 0;
     let pausado = false;
 
     function animar() {
         if (!pausado) {
             posicao += velocidade;
-
-            // Quando percorreu a largura original, volta ao início sem pulo visível
-            if (posicao >= larguraOriginal) {
-                posicao = 0;
-            }
-
+            if (posicao >= larguraOriginal) posicao = 0;
             faixa.style.transform = `translateX(-${posicao}px)`;
         }
         requestAnimationFrame(animar);
     }
 
-    // Pausa ao entrar no container, retoma ao sair
     container.addEventListener('mouseenter', () => { pausado = true; });
     container.addEventListener('mouseleave', () => { pausado = false; });
 

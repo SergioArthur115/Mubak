@@ -12,15 +12,12 @@
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <section class="perfil_container">
             <nav class="perfil_menu">
-                <div class="perfil_cabecalho" style="padding: 20px 40px; border-bottom: 1px solid rgba(10,35,50,0.15);">
-                    <p style="font-size:18px; font-weight:bold; color:var(--cor-primaria);">
-                        Olá, {{ user.nome }}
-                    </p>
-                    <p style="font-size:13px; color:var(--cor-primaria); opacity:0.7;">{{ user.email }}</p>
+                <div class="perfil_cabecalho">
+                    <p class="perfil_cabecalho_nome">Olá, {{ user.nome }}</p>
+                    <p class="perfil_cabecalho_email">{{ user.email }}</p>
                 </div>
                 <ul>
                     <li class="perfil_menu_item">
@@ -42,7 +39,6 @@
             </nav>
         </section>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

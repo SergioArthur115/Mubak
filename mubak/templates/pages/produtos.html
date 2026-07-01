@@ -12,15 +12,11 @@
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
         <div class="produtos_layout">
-
-            <!-- Sidebar de filtros -->
             <aside class="filtros_sidebar">
                 <h3>Filtros</h3>
                 <form method="GET" action="{{ url_for('produto.produtos') }}">
-
                     <div class="filtro_grupo">
                         <h4>Categoria</h4>
                         <ul class="filtro_lista">
@@ -42,7 +38,6 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="filtro_grupo">
                         <h4>Preço</h4>
                         <div class="filtro_preco">
@@ -55,23 +50,18 @@
                                    value="{{ request.args.get('preco_max', '') }}">
                         </div>
                     </div>
-
                     {% if busca %}
                     <input type="hidden" name="q" value="{{ busca }}">
                     {% endif %}
-
                     <button type="submit" class="btn_aplicar_filtro">Aplicar Filtros</button>
                 </form>
             </aside>
-
-            <!-- Grid de produtos -->
             <section class="produtos_grid_container">
                 {% if busca %}
-                <p class="busca_info" style="color:var(--cor-primaria); margin-bottom:16px;">
+                <p class="busca_info">
                     Resultados para: <strong>{{ busca }}</strong> — {{ produtos|length }} produto(s)
                 </p>
                 {% endif %}
-
                 <div class="produtos_grid">
                     {% for prod in produtos %}
                     <article class="produto_card_grid">
@@ -88,16 +78,12 @@
                         </a>
                     </article>
                     {% else %}
-                    <p style="color:var(--cor-primaria); grid-column: 1/-1; padding: 40px 0;">
-                        Nenhum produto encontrado nesta categoria.
-                    </p>
+                    <p class="produtos_vazio">Nenhum produto encontrado nesta categoria.</p>
                     {% endfor %}
                 </div>
             </section>
-
         </div>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

@@ -39,11 +39,38 @@ def get_todos_usuarios():
     return users
 
 
+def buscar_usuarios(nome=None, email=None):
+    """Consulta administrativa de usuários por nome e/ou e-mail (busca parcial)."""
+    conn = get_db_connection()
+    query = 'SELECT * FROM usuario WHERE 1=1'
+    params = []
+    if nome:
+        query += ' AND nome LIKE ?'
+        params.append(f'%{nome}%')
+    if email:
+        query += ' AND email LIKE ?'
+        params.append(f'%{email}%')
+    users = conn.execute(query, params).fetchall()
+    conn.close()
+    return users
+
+
 def atualizar_usuario(id_usuario, nome, email, telefone, foto):
     conn = get_db_connection()
     conn.execute(
         'UPDATE usuario SET nome=?, email=?, telefone=?, foto=? WHERE id_usuario=?',
         (nome, email, telefone, foto, id_usuario)
+    )
+    conn.commit()
+    conn.close()
+
+
+def atualizar_usuario_admin(id_usuario, nome, email, telefone, foto, id_perfil):
+    """Atualização administrativa, incluindo o perfil (Admin/Usuário)."""
+    conn = get_db_connection()
+    conn.execute(
+        'UPDATE usuario SET nome=?, email=?, telefone=?, foto=?, id_perfil=? WHERE id_usuario=?',
+        (nome, email, telefone, foto, id_perfil, id_usuario)
     )
     conn.commit()
     conn.close()

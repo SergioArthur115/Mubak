@@ -9,77 +9,38 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
-    <style>
-        .pedidos_lista { display: flex; flex-direction: column; gap: 16px; }
-        .pedido_card {
-            border: 2px solid var(--cor-primaria); border-radius: var(--borda-radius);
-            padding: 18px 24px; background: rgba(255,255,255,0.15);
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 12px;
-        }
-        .pedido_info p { color: var(--cor-primaria); font-size: 15px; line-height: 1.7; }
-        .pedido_info strong { font-size: 16px; }
-        .status_badge {
-            padding: 4px 12px; border-radius: 20px; font-size: 13px;
-            font-weight: bold; text-transform: capitalize;
-        }
-        .status_pendente  { background: #fff3cd; color: #856404; }
-        .status_pago      { background: #d4edda; color: #155724; }
-        .status_cancelado { background: #f8d7da; color: #721c24; }
-        .btn_ver_pedido {
-            padding: 8px 16px; background: var(--cor-primaria);
-            color: var(--cor-branca); border-radius: var(--borda-radius);
-            font-size: 14px; font-weight: bold; text-decoration: none;
-            transition: background 0.3s;
-        }
-        .btn_ver_pedido:hover { background: var(--cor-destaque); }
-    </style>
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
-        <section class="perfil_container" style="flex-direction:column; align-items:center;">
-            <div style="width:100%; max-width:760px;">
-                <h2 style="color:var(--cor-primaria); margin-bottom:20px;">Meus Pedidos</h2>
-
-                <div class="pedidos_lista">
-                    {% for pedido in pedidos %}
-                    <div class="pedido_card">
-                        <div class="pedido_info">
-                            <p><strong>Pedido #{{ pedido.id_pedido }}</strong></p>
-                            <p>Data: {{ pedido.data_pedido }}</p>
-                            <p>Total: R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</p>
-                            <span class="status_badge status_{{ pedido.status_pedido }}">
-                                {{ pedido.status_pedido }}
-                            </span>
-                        </div>
-                        <a href="{{ url_for('user.detalhe_pedido', id_pedido=pedido.id_pedido) }}"
-                           class="btn_ver_pedido">
-                            Ver detalhes
-                        </a>
+        <section class="perfil_container_coluna">
+            <h2 class="pedidos_titulo">Meus Pedidos</h2>
+            <div class="pedidos_lista">
+                {% for pedido in pedidos %}
+                <div class="pedido_card">
+                    <div class="pedido_info">
+                        <p><strong>Pedido #{{ pedido.id_pedido }}</strong></p>
+                        <p>Data: {{ pedido.data_pedido }}</p>
+                        <p>Total: R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</p>
+                        <span class="status_badge status_{{ pedido.status_pedido }}">
+                            {{ pedido.status_pedido }}
+                        </span>
                     </div>
-                    {% else %}
-                    <p style="color:var(--cor-primaria);">
-                        Você ainda não fez nenhum pedido.
-                        <a href="{{ url_for('produto.produtos') }}"
-                           style="color:var(--cor-destaque); font-weight:bold;">
-                            Ver produtos
-                        </a>
-                    </p>
-                    {% endfor %}
+                    <a href="{{ url_for('user.detalhe_pedido', id_pedido=pedido.id_pedido) }}"
+                       class="btn_ver_pedido">Ver detalhes</a>
                 </div>
-
-                <p style="margin-top:24px; text-align:center;">
-                    <a href="{{ url_for('user.perfil') }}"
-                       style="color:var(--cor-destaque); font-weight:bold;">
-                        ← Voltar ao perfil
-                    </a>
+                {% else %}
+                <p class="perfil_sem_itens">
+                    Você ainda não fez nenhum pedido.
+                    <a href="{{ url_for('produto.produtos') }}">Ver produtos</a>
                 </p>
+                {% endfor %}
+            </div>
+            <div class="perfil_voltar">
+                <a href="{{ url_for('user.perfil') }}">← Voltar ao perfil</a>
             </div>
         </section>
     </main>
-
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>

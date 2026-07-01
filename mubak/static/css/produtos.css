@@ -1,14 +1,12 @@
 /* =========================================
    PÁGINA DE PRODUTOS — produtos.html
    ========================================= */
-
 .produtos_layout {
     display: flex;
     gap: 0;
     min-height: calc(100vh - 220px);
 }
 
-/* --- Sidebar de Filtros --- */
 .filtros_sidebar {
     width: 220px;
     min-width: 200px;
@@ -51,6 +49,7 @@
     cursor: pointer;
 }
 
+.filtro_lista input[type="radio"],
 .filtro_lista input[type="checkbox"] {
     cursor: pointer;
     accent-color: var(--cor-primaria);
@@ -93,10 +92,14 @@
     background-color: var(--cor-destaque);
 }
 
-/* --- Grid de Produtos --- */
 .produtos_grid_container {
     flex: 1;
     padding: 20px;
+}
+
+.busca_info {
+    color: var(--cor-primaria);
+    margin-bottom: 16px;
 }
 
 .produtos_grid {
@@ -141,4 +144,10 @@
     font-size: 17px;
     font-weight: bold;
     color: var(--cor-fundo);
+}
+
+.produtos_vazio {
+    color: var(--cor-primaria);
+    grid-column: 1 / -1;
+    padding: 40px 0;
 }

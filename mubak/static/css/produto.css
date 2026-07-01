@@ -1,7 +1,6 @@
 /* =========================================
    PÁGINA DE PRODUTO INDIVIDUAL — produto.html
    ========================================= */
-
 .produto_detalhe_container {
     max-width: 1100px;
     margin: 30px auto;
@@ -11,7 +10,6 @@
     gap: 24px;
 }
 
-/* --- Topo: Imagem + Informações principais --- */
 .produto_detalhe_topo {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -26,8 +24,10 @@
     border-right: 2px solid var(--cor-primaria);
     padding: 30px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 14px;
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -35,6 +35,27 @@
     max-width: 100%;
     max-height: 320px;
     object-fit: contain;
+}
+
+.produto_miniaturas {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.miniatura {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border: 2px solid var(--cor-primaria);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.miniatura:hover {
+    border-color: var(--cor-destaque);
 }
 
 .produto_detalhe_info_principal {
@@ -62,6 +83,12 @@
     font-weight: bold;
 }
 
+.produto_sem_estoque {
+    font-size: 14px;
+    color: var(--cor-perigo);
+    font-weight: bold;
+}
+
 .produto_quantidade {
     display: flex;
     align-items: center;
@@ -86,22 +113,6 @@
     margin-top: 10px;
 }
 
-.btn_comprar {
-    padding: 12px;
-    background-color: var(--cor-destaque);
-    color: var(--cor-branca);
-    border: none;
-    border-radius: var(--borda-radius);
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn_comprar:hover {
-    background-color: #0056b3;
-}
-
 .btn_carrinho {
     padding: 12px;
     background-color: var(--cor-primaria);
@@ -117,23 +128,17 @@
     background-color: #1a3d55;
 }
 
-.btn_favorito {
-    padding: 10px;
-    background-color: transparent;
+.produto_login_aviso {
+    margin-top: 14px;
     color: var(--cor-primaria);
-    border: 2px solid var(--cor-primaria);
-    border-radius: var(--borda-radius);
     font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s;
 }
 
-.btn_favorito:hover {
-    background-color: var(--cor-primaria);
-    color: var(--cor-branca);
+.produto_login_aviso a {
+    color: var(--cor-destaque);
+    font-weight: bold;
 }
 
-/* --- Descrição e Informações Técnicas --- */
 .produto_detalhe_descricao,
 .produto_detalhe_tecnico {
     border: 2px solid var(--cor-primaria);

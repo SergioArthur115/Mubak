@@ -2,15 +2,15 @@
    VARIÁVEIS E BASE
    ========================================= */
 :root {
-    --cor-primaria: #0a2332;
-    --cor-fundo: #6ac3c8;
-    --cor-branca: #ffffff;
+    --cor-primaria:    #0a2332;
+    --cor-fundo:       #6ac3c8;
+    --cor-branca:      #ffffff;
     --cor-texto-claro: #ffffff;
-    --cor-destaque: #007BFF;
-    --cor-perigo: #e74c3c;
-    --cor-sucesso: #27ae60;
-    --borda-radius: 8px;
-    --sombra: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --cor-destaque:    #007BFF;
+    --cor-perigo:      #e74c3c;
+    --cor-sucesso:     #27ae60;
+    --borda-radius:    8px;
+    --sombra:          0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -75,14 +75,38 @@ h2 {
     background-color: var(--cor-destaque);
 }
 
-.header_logo img,
-.header_login img {
+.header_logo img {
     display: block;
     max-height: 50px;
 }
 
-.header_login a {
-    display: block;
+/* --- Área de usuário no header --- */
+.header_usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header_usuario_avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--cor-primaria);
+}
+
+.header_usuario_nome {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--cor-primaria);
+    white-space: nowrap;
+}
+
+.header_usuario a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
 }
 
 /* =========================================
@@ -115,6 +139,12 @@ h2 {
     color: var(--cor-destaque);
 }
 
+.menu_principal a.ativo {
+    color: var(--cor-destaque);
+    border-bottom: 2px solid var(--cor-destaque);
+    padding-bottom: 2px;
+}
+
 /* =========================================
    BANNER PRINCIPAL
    ========================================= */
@@ -132,6 +162,30 @@ h2 {
 }
 
 /* =========================================
+   FLASH MESSAGES
+   ========================================= */
+.flash_msgs {
+    list-style: none;
+    margin-bottom: 12px;
+}
+
+.flash_msgs li {
+    padding: 8px 12px;
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+}
+
+.flash_msgs.erro li {
+    color: var(--cor-perigo);
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+.flash_msgs.sucesso li {
+    color: var(--cor-sucesso);
+    background-color: rgba(39, 174, 96, 0.1);
+}
+
+/* =========================================
    FOOTER
    ========================================= */
 .footer {
@@ -144,11 +198,4 @@ h2 {
     color: var(--cor-branca);
     font-size: 14px;
     font-weight: normal;
-}
-
-/* Item ativo no menu principal */
-.menu_principal a.ativo {
-    color: var(--cor-destaque);
-    border-bottom: 2px solid var(--cor-destaque);
-    padding-bottom: 2px;
 }

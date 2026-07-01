@@ -1,5 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from models.usuario_model import get_todos_usuarios, get_usuario_por_id, atualizar_usuario, deletar_usuario
+from werkzeug.security import generate_password_hash
+from models.usuario_model import (
+    get_todos_usuarios, get_usuario_por_id, atualizar_usuario, deletar_usuario,
+    buscar_usuarios, get_usuario_por_email, criar_usuario, atualizar_usuario_admin
+)
 from models.produto_model import (
     get_todos_produtos, get_produto_por_id, criar_produto,
     atualizar_produto, deletar_produto, adicionar_imagem_produto, get_todas_categorias
@@ -16,15 +20,20 @@ bp = Blueprint('admin', __name__)
 @bp.route('/admin')
 @admin_required
 def painel():
-    search = request.args.get('search', '').lower()
+    # Consulta administrativa: o admin pode buscar usuários por nome e/ou e-mail.
+    busca_nome  = request.args.get('busca_nome', '').strip()
+    busca_email = request.args.get('busca_email', '').strip()
+    search = request.args.get('search', '').lower()  # mantém compatibilidade com busca simples antiga
     order  = request.args.get('order', 'nome')
     page   = int(request.args.get('page', 1))
     per_page = 10
 
-    users = get_todos_usuarios()
-
-    if search:
-        users = [u for u in users if search in u['nome'].lower() or search in u['email'].lower()]
+    if busca_nome or busca_email:
+        users = buscar_usuarios(nome=busca_nome or None, email=busca_email or None)
+    else:
+        users = get_todos_usuarios()
+        if search:
+            users = [u for u in users if search in u['nome'].lower() or search in u['email'].lower()]
 
     validos = ['nome', 'email', 'id_usuario']
     order = order if order in validos else 'nome'
@@ -41,11 +50,46 @@ def painel():
         page=page,
         total_pages=total_pages,
         search=search,
+        busca_nome=busca_nome,
+        busca_email=busca_email,
         order=order
     )
 
 
 # ── Usuários ───────────────────────────────────────────────────────────────────
+
+@bp.route('/admin/usuario/novo', methods=['GET', 'POST'])
+@admin_required
+def novo_usuario():
+    if request.method == 'POST':
+        nome      = request.form.get('nome', '').strip()
+        email     = request.form.get('email', '').strip()
+        senha     = request.form.get('senha', '')
+        telefone  = request.form.get('telefone', '').strip()
+        cpf       = request.form.get('cpf', '').strip()
+        data_nasc = request.form.get('data_nasc', '')
+        id_perfil = int(request.form.get('id_perfil', 2))
+        file      = request.files.get('foto')
+
+        if get_usuario_por_email(email):
+            flash('E-mail já cadastrado.')
+            return redirect(url_for('admin.novo_usuario'))
+
+        filename = 'default.png'
+        if file and file.filename:
+            ext = file.filename.rsplit('.', 1)[-1]
+            filename = f"{uuid.uuid4()}.{ext}"
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+        criar_usuario(
+            nome, email, generate_password_hash(senha),
+            telefone, cpf, data_nasc, filename, id_perfil
+        )
+        flash('Usuário criado com sucesso!')
+        return redirect(url_for('admin.painel'))
+
+    return render_template('pages/admin_usuario_form.html', user=None)
+
 
 @bp.route('/admin/usuario/editar/<int:id>', methods=['GET', 'POST'])
 @admin_required
@@ -55,10 +99,11 @@ def editar_usuario(id):
         return "Usuário não encontrado", 404
 
     if request.method == 'POST':
-        nome     = request.form.get('nome', '').strip()
-        email    = request.form.get('email', '').strip()
-        telefone = request.form.get('telefone', '').strip()
-        file     = request.files.get('foto')
+        nome      = request.form.get('nome', '').strip()
+        email     = request.form.get('email', '').strip()
+        telefone  = request.form.get('telefone', '').strip()
+        id_perfil = int(request.form.get('id_perfil', user['id_perfil']))
+        file      = request.files.get('foto')
 
         filename = user['foto']
         if file and file.filename:
@@ -66,16 +111,17 @@ def editar_usuario(id):
             filename = f"{uuid.uuid4()}.{ext}"
             file.save(os.path.join(UPLOAD_FOLDER, filename))
 
-        atualizar_usuario(id, nome, email, telefone, filename)
+        atualizar_usuario_admin(id, nome, email, telefone, filename, id_perfil)
         flash('Usuário atualizado.')
         return redirect(url_for('admin.painel'))
 
-    return render_template('pages/admin_editar_usuario.html', user=user)
+    return render_template('pages/admin_usuario_form.html', user=user)
 
 
 @bp.route('/admin/usuario/deletar/<int:id>')
 @admin_required
 def deletar_usuario_view(id):
+    # Regra de negócio: o admin não pode excluir a si mesmo.
     if session['user_id'] == id:
         flash('Você não pode excluir a si mesmo.')
         return redirect(url_for('admin.painel'))

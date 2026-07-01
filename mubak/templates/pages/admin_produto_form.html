@@ -6,17 +6,25 @@
     <title>Mubak - {{ 'Editar' if produto else 'Novo' }} Produto</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
 </head>
 <body>
     {% include 'partials/header.html' %}
-
     <main>
-        <section class="perfil_container" style="align-items:flex-start; justify-content:center;">
-            <div class="cadastro_box" style="max-width:600px; width:100%;">
+        <div class="admin_form_container">
+            <div class="cadastro_box">
                 <h2>{{ 'Editar Produto' if produto else 'Novo Produto' }}</h2>
+
+                {% with msgs = get_flashed_messages() %}
+                {% if msgs %}
+                <ul class="admin_flash">
+                    {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
 
                 <form class="cadastro_form" method="POST"
                       action="{{ url_for('admin.editar_produto', id_produto=produto.id_produto) if produto else url_for('admin.novo_produto') }}"
@@ -36,7 +44,8 @@
 
                     <div class="cadastro_campo">
                         <label for="especificacao_tecnica">Especificação Técnica</label>
-                        <input type="text" id="especificacao_tecnica" name="especificacao_tecnica"
+                        <input type="text" id="especificacao_tecnica"
+                               name="especificacao_tecnica"
                                value="{{ produto.especificacao_tecnica if produto else '' }}">
                     </div>
 
@@ -56,9 +65,7 @@
 
                     <div class="cadastro_campo">
                         <label for="id_categoria">Categoria</label>
-                        <select id="id_categoria" name="id_categoria"
-                                style="padding:10px 14px; border:2px solid var(--cor-primaria);
-                                       border-radius:var(--borda-radius); font-size:15px;">
+                        <select id="id_categoria" name="id_categoria">
                             {% for cat in categorias %}
                             <option value="{{ cat.id_categoria }}"
                                 {{ 'selected' if produto and produto.id_categoria == cat.id_categoria }}>
@@ -70,12 +77,19 @@
 
                     <div class="cadastro_campo">
                         <label for="status_prod">Status</label>
-                        <select id="status_prod" name="status_prod"
-                                style="padding:10px 14px; border:2px solid var(--cor-primaria);
-                                       border-radius:var(--borda-radius); font-size:15px;">
-                            <option value="ativo"    {{ 'selected' if not produto or produto.status_prod=='ativo' }}>Ativo</option>
-                            <option value="inativo"  {{ 'selected' if produto and produto.status_prod=='inativo' }}>Inativo</option>
-                            <option value="esgotado" {{ 'selected' if produto and produto.status_prod=='esgotado' }}>Esgotado</option>
+                        <select id="status_prod" name="status_prod">
+                            <option value="ativo"
+                                {{ 'selected' if not produto or produto.status_prod == 'ativo' }}>
+                                Ativo
+                            </option>
+                            <option value="inativo"
+                                {{ 'selected' if produto and produto.status_prod == 'inativo' }}>
+                                Inativo
+                            </option>
+                            <option value="esgotado"
+                                {{ 'selected' if produto and produto.status_prod == 'esgotado' }}>
+                                Esgotado
+                            </option>
                         </select>
                     </div>
 
@@ -83,8 +97,9 @@
                         <label for="imagens">Imagens do Produto</label>
                         <input type="file" id="imagens" name="imagens"
                                accept="image/*" multiple>
-                        <span style="font-size:12px; color:var(--cor-primaria); opacity:0.7;">
+                        <span class="campo_hint">
                             Selecione uma ou mais imagens.
+                            {% if produto %}Novas imagens serão adicionadas às existentes.{% endif %}
                         </span>
                     </div>
 
@@ -93,16 +108,13 @@
                     </button>
                 </form>
 
-                <p style="margin-top:16px; text-align:center;">
-                    <a href="{{ url_for('admin.admin_produtos') }}"
-                       style="color:var(--cor-destaque); font-weight:bold;">
-                        ← Voltar para produtos
-                    </a>
-                </p>
+                <div class="form_voltar">
+                    <a href="{{ url_for('admin.admin_produtos') }}">← Voltar para produtos</a>
+                </div>
             </div>
-        </section>
+        </div>
     </main>
-
     {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
 </body>
 </html>

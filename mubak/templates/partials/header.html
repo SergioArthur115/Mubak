@@ -8,21 +8,27 @@
 
     <section class="header_barra_pesquisa">
         <form action="{{ url_for('produto.pesquisar') }}" method="GET">
-            <input type="search" name="q" placeholder="O que você procura?" value="{{ busca|default('') }}"
-                aria-label="Pesquisar">
+            <input type="search" name="q" placeholder="O que você procura?"
+                   value="{{ busca|default('') }}" aria-label="Pesquisar">
             <button type="submit">Pesquisar</button>
         </form>
     </section>
 
-    <div class="header_login">
+    <div class="header_usuario">
         {% if session.user_id %}
-        <a href="{{ url_for('user.perfil') }}" title="{{ session.user_nome }}">
-            <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Meu perfil">
-        </a>
+            <a href="{{ url_for('user.perfil') }}" title="Ir para meu perfil">
+                <img class="header_usuario_avatar"
+                     src="{{ url_for('static', filename='uploads/' + (session.user_foto or 'default.png')) }}"
+                     alt="Foto de {{ session.user_nome }}">
+                <span class="header_usuario_nome">{{ session.user_nome }}</span>
+            </a>
         {% else %}
-        <a href="{{ url_for('auth.login') }}">
-            <img src="{{ url_for('static', filename='images/login_icon.png') }}" alt="Login">
-        </a>
+            <a href="{{ url_for('auth.login') }}">
+                <img class="header_usuario_avatar"
+                     src="{{ url_for('static', filename='images/login_icon.png') }}"
+                     alt="Login">
+                <span class="header_usuario_nome">Entrar</span>
+            </a>
         {% endif %}
     </div>
 </header>

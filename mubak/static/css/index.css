@@ -1,7 +1,6 @@
 /* =========================================
    PÁGINA INICIAL — index.html
    ========================================= */
-
 .carrosseis {
     display: flex;
     flex-direction: column;
@@ -17,7 +16,6 @@
     margin-bottom: 1%;
 }
 
-/* Container visível — mascara o overflow */
 .div_carrosel_promocoes,
 .div_carrosel_produtos_visualizados {
     width: 100%;
@@ -30,7 +28,6 @@
     position: relative;
 }
 
-/* Faixa interna que se move com translateX — criada pelo JS */
 .carrosel_faixa {
     display: flex;
     gap: 40px;
@@ -38,7 +35,6 @@
     will-change: transform;
 }
 
-/* Card individual */
 .produto_card {
     flex: 0 0 250px;
     background: var(--cor-primaria);
@@ -46,7 +42,6 @@
     border-radius: var(--borda-radius);
     padding: 15px;
     text-align: center;
-    transition: box-shadow 0.2s;
     position: relative;
     top: 0;
     transition: top 0.2s, box-shadow 0.2s;

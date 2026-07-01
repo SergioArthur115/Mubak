@@ -153,6 +153,9 @@ def init_db():
             (nome, desc),
         )
 
+    # IMPORTANTE: status_prod precisa ser exatamente 'ativo' (minúsculo),
+    # pois as consultas em produto_model.py filtram com WHERE status_prod = 'ativo'.
+    # Antes estava "Ativo" (maiúsculo) e por isso nenhum produto aparecia no site.
     produtos_exemplo = [
         # Categoria 1: Peças
         (
@@ -162,7 +165,7 @@ def init_db():
             "8GB GDDR6, 128-bit, DLSS 3.0",
             2199.00,
             10,
-            "Ativo",
+            "ativo",
             1,
         ),
         (
@@ -172,7 +175,7 @@ def init_db():
             "Leitura 3500MB/s, Gravação 3000MB/s, PCIe Gen3",
             420.00,
             25,
-            "Ativo",
+            "ativo",
             1,
         ),
         # Categoria 2: Computadores
@@ -183,7 +186,7 @@ def init_db():
             "Intel i5, 16GB RAM, RTX 3050, SSD 512GB",
             3899.90,
             5,
-            "Ativo",
+            "ativo",
             2,
         ),
         # Categoria 3: Laptops
@@ -194,7 +197,7 @@ def init_db():
             "Tela 14' IPS, AMD Ryzen 7, 16GB RAM, SSD 1TB",
             4199.00,
             8,
-            "Ativo",
+            "ativo",
             3,
         ),
         # Categoria 4: Smartphones
@@ -205,7 +208,7 @@ def init_db():
             "Tela 6.7', 128GB, Câmera 50MP, 5G",
             1799.00,
             15,
-            "Ativo",
+            "ativo",
             4,
         ),
         # Categoria 5: Monitores
@@ -216,7 +219,7 @@ def init_db():
             "Painel VA, 1ms de resposta, HDMI/DisplayPort",
             899.90,
             12,
-            "Ativo",
+            "ativo",
             5,
         ),
         # Categoria 6: Acessórios
@@ -227,7 +230,7 @@ def init_db():
             "Layout ABNT2, Switch Blue, Anti-ghosting",
             189.90,
             30,
-            "Ativo",
+            "ativo",
             6,
         ),
         (
@@ -237,7 +240,7 @@ def init_db():
             "Até 7200 DPI, 6 botões programáveis, RGB",
             79.90,
             40,
-            "Ativo",
+            "ativo",
             6,
         ),
     ]
@@ -252,6 +255,9 @@ def init_db():
             prod,
         )
 
+    # Corrige bancos já existentes que tenham sido criados com status "Ativo" (maiúsculo)
+    conn.execute("UPDATE produto SET status_prod='ativo' WHERE status_prod='Ativo'")
+
     # Admin padrão
     conn.execute(
         """INSERT OR IGNORE INTO usuario
@@ -264,7 +270,7 @@ def init_db():
             "00000000000",
             "111.111.111-11",
             "1995-05-01",
-            "temp.png",
+            "default.png",
         ),
     )
 
