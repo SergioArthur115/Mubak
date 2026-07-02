@@ -43,7 +43,11 @@
         <li><a href="{{ url_for('produto.produtos', categoria='Monitores') }}">Monitores</a></li>
         <li><a href="{{ url_for('produto.produtos', categoria='Acessórios') }}">Acessórios</a></li>
         {% if session.user_id %}
-        <li><a href="{{ url_for('carrinho.carrinho') }}">Carrinho</a></li>
+            {% if session.is_admin %}
+            <li><a href="{{ url_for('admin.painel') }}">Painel Admin</a></li>
+            {% else %}
+            <li><a href="{{ url_for('carrinho.carrinho') }}">Carrinho</a></li>
+            {% endif %}
         {% endif %}
     </ul>
 </nav>

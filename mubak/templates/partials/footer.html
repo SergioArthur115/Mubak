@@ -2,3 +2,6 @@
 <footer class="footer">
     <h2>©Todos direitos reservados — Mubak</h2>
 </footer>
+{% if session.user_id %}
+<script src="{{ url_for('static', filename='js/auto-logout.js') }}"></script>
+{% endif %}
