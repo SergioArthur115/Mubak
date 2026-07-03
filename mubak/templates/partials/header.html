@@ -46,6 +46,7 @@
             {% if session.is_admin %}
             <li><a href="{{ url_for('admin.painel') }}">Painel Admin</a></li>
             {% else %}
+            <li><a href="{{ url_for('favorito.favoritos') }}">Favoritos</a></li>
             <li><a href="{{ url_for('carrinho.carrinho') }}">Carrinho</a></li>
             {% endif %}
         {% endif %}

@@ -65,6 +65,18 @@
                 <div class="produtos_grid">
                     {% for prod in produtos %}
                     <article class="produto_card_grid">
+                        {% if session.user_id %}
+                        <form method="POST"
+                              action="{{ url_for('favorito.toggle', id_produto=prod.id_produto) }}"
+                              class="produto_favorito_mini_form">
+                            <input type="hidden" name="proximo" value="{{ request.full_path }}">
+                            <button type="submit"
+                                    class="btn_favorito_mini {{ 'ativo' if prod.id_produto in favoritos_ids }}"
+                                    title="{{ 'Remover dos favoritos' if prod.id_produto in favoritos_ids else 'Adicionar aos favoritos' }}">
+                                {{ '★' if prod.id_produto in favoritos_ids else '☆' }}
+                            </button>
+                        </form>
+                        {% endif %}
                         <a href="{{ url_for('produto.produto', id_produto=prod.id_produto) }}">
                             {% if prod.imagem %}
                             <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"

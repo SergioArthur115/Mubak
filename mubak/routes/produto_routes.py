@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from models.produto_model import (
     get_todos_produtos, get_produto_por_id,
     get_imagens_produto, get_todas_categorias, get_produtos_destaque
 )
+from models.favorito_model import get_ids_favoritos_usuario, is_favorito
 
 bp = Blueprint('produto', __name__)
 
@@ -22,12 +23,17 @@ def produtos():
     )
     categorias = get_todas_categorias()
 
+    favoritos_ids = set()
+    if session.get('user_id'):
+        favoritos_ids = get_ids_favoritos_usuario(session['user_id'])
+
     return render_template(
         'pages/produtos.html',
         produtos=lista,
         categorias=categorias,
         categoria_ativa=categoria,
-        busca=busca or ''
+        busca=busca or '',
+        favoritos_ids=favoritos_ids
     )
 
 
@@ -38,7 +44,15 @@ def produto(id_produto):
         return "Produto não encontrado", 404
 
     imagens = get_imagens_produto(id_produto)
-    return render_template('pages/produto.html', produto=prod, imagens=imagens)
+
+    favoritado = False
+    if session.get('user_id'):
+        favoritado = is_favorito(session['user_id'], id_produto)
+
+    return render_template(
+        'pages/produto.html',
+        produto=prod, imagens=imagens, favoritado=favoritado
+    )
 
 
 @bp.route('/pesquisar')
@@ -46,10 +60,16 @@ def pesquisar():
     busca = request.args.get('q', '').strip()
     lista = get_todos_produtos(busca=busca) if busca else []
     categorias = get_todas_categorias()
+
+    favoritos_ids = set()
+    if session.get('user_id'):
+        favoritos_ids = get_ids_favoritos_usuario(session['user_id'])
+
     return render_template(
         'pages/produtos.html',
         produtos=lista,
         categorias=categorias,
         categoria_ativa=None,
-        busca=busca
+        busca=busca,
+        favoritos_ids=favoritos_ids
     )

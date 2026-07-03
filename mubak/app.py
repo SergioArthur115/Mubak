@@ -6,6 +6,7 @@ from routes.user_routes import bp as user_bp
 from routes.admin_routes import bp as admin_bp
 from routes.produto_routes import bp as produto_bp
 from routes.carrinho_routes import bp as carrinho_bp
+from routes.favorito_routes import bp as favorito_bp
 from models.produto_model import get_produtos_destaque
 from config import SECRET_KEY
 
@@ -23,6 +24,7 @@ app.register_blueprint(user_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(produto_bp)
 app.register_blueprint(carrinho_bp)
+app.register_blueprint(favorito_bp)
 
 
 @app.before_request

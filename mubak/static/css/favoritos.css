@@ -1,0 +1,59 @@
+/* =========================================
+   PÁGINA DE FAVORITOS — favoritos.html
+   ========================================= */
+.favoritos_titulo {
+    color: var(--cor-primaria);
+    margin-bottom: 24px;
+}
+
+.favoritos_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.favorito_card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: default;
+}
+
+.favorito_card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.favorito_indisponivel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--cor-perigo);
+    color: var(--cor-branca);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.btn_remover_favorito {
+    display: block;
+    text-align: center;
+    background: transparent;
+    border: 2px solid var(--cor-branca);
+    color: var(--cor-branca);
+    border-radius: var(--borda-radius);
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn_remover_favorito:hover {
+    background: var(--cor-perigo);
+    border-color: var(--cor-perigo);
+    color: var(--cor-branca);
+}

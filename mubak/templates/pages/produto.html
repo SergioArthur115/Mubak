@@ -14,6 +14,13 @@
     {% include 'partials/header.html' %}
     <main>
         <div class="produto_detalhe_container">
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+            <ul class="flash_msgs sucesso">
+                {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
             <div class="produto_detalhe_topo">
                 <div class="produto_detalhe_imagem">
                     {% if imagens %}
@@ -62,6 +69,20 @@
                     <p class="produto_login_aviso">
                         <a href="{{ url_for('auth.login') }}">Faça login</a> para comprar.
                     </p>
+                    {% endif %}
+                    {% if session.user_id %}
+                    <form method="POST"
+                          action="{{ url_for('favorito.toggle', id_produto=produto.id_produto) }}"
+                          class="produto_favorito_form">
+                        <input type="hidden" name="proximo" value="{{ request.path }}">
+                        <button type="submit" class="btn_favorito {{ 'ativo' if favoritado }}">
+                            {% if favoritado %}
+                            ★ Remover dos Favoritos
+                            {% else %}
+                            ☆ Adicionar aos Favoritos
+                            {% endif %}
+                        </button>
+                    </form>
                     {% endif %}
                 </div>
             </div>

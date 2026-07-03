@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Meus Favoritos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/produtos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/favoritos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+    <main>
+        <section class="perfil_container_coluna">
+            <h2 class="favoritos_titulo">Meus Favoritos</h2>
+
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+            <ul class="flash_msgs sucesso">
+                {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            {% if itens %}
+            <div class="favoritos_grid">
+                {% for item in itens %}
+                <article class="produto_card_grid favorito_card">
+                    {% if item.status_prod != 'ativo' or item.estoque <= 0 %}
+                    <span class="favorito_indisponivel">Indisponível</span>
+                    {% endif %}
+                    <a href="{{ url_for('produto.produto', id_produto=item.id_produto) }}">
+                        {% if item.imagem %}
+                        <img src="{{ url_for('static', filename='uploads/' + item.imagem) }}"
+                             alt="{{ item.nome }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/temp.png') }}"
+                             alt="{{ item.nome }}">
+                        {% endif %}
+                        <h3>{{ item.nome }}</h3>
+                        <p class="preco">R$ {{ "%.2f"|format(item.preco)|replace(".", ",") }}</p>
+                    </a>
+                    <a href="{{ url_for('favorito.remover', id_produto=item.id_produto) }}"
+                       class="btn_remover_favorito"
+                       onclick="return confirm('Remover este produto dos favoritos?')">
+                        ✕ Remover dos Favoritos
+                    </a>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="perfil_sem_itens">
+                Você ainda não adicionou nenhum produto aos favoritos.
+                <a href="{{ url_for('produto.produtos') }}">Ver produtos</a>
+            </p>
+            {% endif %}
+
+            <div class="perfil_voltar">
+                <a href="{{ url_for('user.perfil') }}">← Voltar ao perfil</a>
+            </div>
+        </section>
+    </main>
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+</body>
+</html>

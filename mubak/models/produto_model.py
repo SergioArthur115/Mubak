@@ -86,6 +86,7 @@ def atualizar_produto(id_produto, nome, descricao, especificacao_tecnica, preco,
 def deletar_produto(id_produto):
     conn = get_db_connection()
     conn.execute('DELETE FROM imagem_produto WHERE id_produto=?', (id_produto,))
+    conn.execute('DELETE FROM favorito WHERE id_produto=?', (id_produto,))
     conn.execute('DELETE FROM produto WHERE id_produto=?', (id_produto,))
     conn.commit()
     conn.close()

@@ -132,6 +132,16 @@ def init_db():
             assunto VARCHAR(50) NOT NULL,
             FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
         );
+
+        CREATE TABLE IF NOT EXISTS favorito(
+            id_favorito INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            id_usuario INT NOT NULL,
+            id_produto INT NOT NULL,
+            data_criacao DATE NOT NULL,
+            FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
+            FOREIGN KEY(id_produto) REFERENCES produto(id_produto),
+            UNIQUE(id_usuario, id_produto)
+        );
     """)
 
     # Perfis padrão

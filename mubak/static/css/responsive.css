@@ -8,6 +8,7 @@
     .menu_principal a  { font-size: 17px; }
     .carrosel_promocoes, .carrosel_produtos_visualizados { width: 90%; }
     .produtos_grid { grid-template-columns: repeat(3, 1fr); }
+    .favoritos_grid { grid-template-columns: repeat(3, 1fr); padding: 0 14px; }
     .produto_detalhe_container { padding: 0 14px; }
     .admin_container { padding: 0 14px; }
 }
@@ -50,6 +51,7 @@
     .filtro_grupo { flex: 1 1 140px; }
     .btn_aplicar_filtro { width: 100%; margin-top: 0; }
     .produtos_grid { grid-template-columns: repeat(2, 1fr); }
+    .favoritos_grid { grid-template-columns: repeat(2, 1fr); padding: 0; }
 
     /* Produto detalhe */
     .produto_detalhe_topo { grid-template-columns: 1fr; }
@@ -80,6 +82,7 @@
     .menu_principal a { font-size: 13px; }
     .banner_principal img { height: 130px; }
     .produtos_grid { grid-template-columns: 1fr; }
+    .favoritos_grid { grid-template-columns: 1fr; }
     .produto_detalhe_info_principal { padding: 18px; }
     .produto_nome { font-size: 20px; }
     .produto_preco_detalhe { font-size: 22px; }

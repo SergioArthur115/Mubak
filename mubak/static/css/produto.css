@@ -139,6 +139,40 @@
     font-weight: bold;
 }
 
+/* --- Botão de favoritar na página de detalhe --- */
+.produto_favorito_form {
+    margin-top: 10px;
+}
+
+.btn_favorito {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: 2px solid var(--cor-primaria);
+    color: var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn_favorito:hover {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+.btn_favorito.ativo {
+    background-color: var(--cor-perigo);
+    border-color: var(--cor-perigo);
+    color: var(--cor-branca);
+}
+
+.btn_favorito.ativo:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
 .produto_detalhe_descricao,
 .produto_detalhe_tecnico {
     border: 2px solid var(--cor-primaria);
