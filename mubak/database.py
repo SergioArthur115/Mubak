@@ -149,11 +149,15 @@ def init_db():
     """)
 
     # ── Migração: bancos já existentes podem não ter as colunas de cupom em pedido ──
-    colunas_pedido = [row['name'] for row in conn.execute('PRAGMA table_info(pedido)').fetchall()]
-    if 'id_cupom' not in colunas_pedido:
-        conn.execute('ALTER TABLE pedido ADD COLUMN id_cupom INT')
-    if 'valor_desconto' not in colunas_pedido:
-        conn.execute('ALTER TABLE pedido ADD COLUMN valor_desconto DECIMAL(10,2) DEFAULT 0')
+    colunas_pedido = [
+        row["name"] for row in conn.execute("PRAGMA table_info(pedido)").fetchall()
+    ]
+    if "id_cupom" not in colunas_pedido:
+        conn.execute("ALTER TABLE pedido ADD COLUMN id_cupom INT")
+    if "valor_desconto" not in colunas_pedido:
+        conn.execute(
+            "ALTER TABLE pedido ADD COLUMN valor_desconto DECIMAL(10,2) DEFAULT 0"
+        )
 
     # Perfis padrão
     conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (1, 'Admin')")
@@ -174,9 +178,6 @@ def init_db():
             (nome, desc),
         )
 
-    # IMPORTANTE: status_prod precisa ser exatamente 'ativo' (minúsculo),
-    # pois as consultas em produto_model.py filtram com WHERE status_prod = 'ativo'.
-    # Antes estava "Ativo" (maiúsculo) e por isso nenhum produto aparecia no site.
     produtos_exemplo = [
         # Categoria 1: Peças
         (
@@ -276,9 +277,6 @@ def init_db():
             prod,
         )
 
-    # Corrige bancos já existentes que tenham sido criados com status "Ativo" (maiúsculo)
-    conn.execute("UPDATE produto SET status_prod='ativo' WHERE status_prod='Ativo'")
-
     # Admin padrão
     conn.execute(
         """INSERT OR IGNORE INTO usuario
@@ -295,7 +293,6 @@ def init_db():
         ),
     )
 
-    # Cupons de exemplo (o campo "valor" é um percentual de desconto)
     hoje = date.today()
     validade_longa = (hoje + timedelta(days=365)).isoformat()
     cupons_exemplo = [
