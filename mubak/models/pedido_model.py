@@ -2,12 +2,14 @@ from database import get_db_connection
 from datetime import date
 
 
-def criar_pedido(id_usuario, id_endereco, valor_total):
+def criar_pedido(id_usuario, id_endereco, valor_total, id_cupom=None, valor_desconto=0):
     conn = get_db_connection()
     cursor = conn.execute(
-        """INSERT INTO pedido (id_usuario, id_endereco, data_pedido, valor_total, status_pedido)
-           VALUES (?,?,?,?,?)""",
-        (id_usuario, id_endereco, date.today().isoformat(), valor_total, 'pendente')
+        """INSERT INTO pedido
+           (id_usuario, id_endereco, data_pedido, valor_total, status_pedido, id_cupom, valor_desconto)
+           VALUES (?,?,?,?,?,?,?)""",
+        (id_usuario, id_endereco, date.today().isoformat(), valor_total,
+         'pendente', id_cupom, valor_desconto)
     )
     id_pedido = cursor.lastrowid
     conn.commit()
@@ -34,6 +36,19 @@ def get_pedidos_usuario(id_usuario):
     ).fetchall()
     conn.close()
     return rows
+
+
+def get_pedido_por_id(id_pedido):
+    conn = get_db_connection()
+    row = conn.execute(
+        """SELECT pe.*, c.codigo AS cupom_codigo
+           FROM pedido pe
+           LEFT JOIN cupom c ON pe.id_cupom = c.id_cupom
+           WHERE pe.id_pedido=?""",
+        (id_pedido,)
+    ).fetchone()
+    conn.close()
+    return row
 
 
 def get_itens_pedido(id_pedido):

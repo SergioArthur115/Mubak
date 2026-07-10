@@ -21,6 +21,9 @@
                     <div class="pedido_info">
                         <p><strong>Pedido #{{ pedido.id_pedido }}</strong></p>
                         <p>Data: {{ pedido.data_pedido }}</p>
+                        {% if pedido.valor_desconto and pedido.valor_desconto > 0 %}
+                        <p>Desconto aplicado: R$ {{ "%.2f"|format(pedido.valor_desconto)|replace(".", ",") }}</p>
+                        {% endif %}
                         <p>Total: R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</p>
                         <span class="status_badge status_{{ pedido.status_pedido }}">
                             {{ pedido.status_pedido }}

@@ -42,11 +42,25 @@
             </div>
             <aside class="carrinho_resumo">
                 <h2>Resumo</h2>
-                <div class="resumo_linha total">
-                    <span>Total do Pedido</span>
+                <div class="resumo_linha">
+                    <span>Subtotal dos Itens</span>
                     <span>
                         R$ {% if itens %}
                            {{ "%.2f"|format(itens|sum(attribute='preco_unitario'))|replace(".", ",") }}
+                           {% else %}0,00{% endif %}
+                    </span>
+                </div>
+                {% if pedido and pedido.valor_desconto and pedido.valor_desconto > 0 %}
+                <div class="resumo_linha cupom_desconto_linha">
+                    <span>Desconto{% if pedido.cupom_codigo %} ({{ pedido.cupom_codigo }}){% endif %}</span>
+                    <span>- R$ {{ "%.2f"|format(pedido.valor_desconto)|replace(".", ",") }}</span>
+                </div>
+                {% endif %}
+                <div class="resumo_linha total">
+                    <span>Total do Pedido</span>
+                    <span>
+                        R$ {% if pedido %}
+                           {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}
                            {% else %}0,00{% endif %}
                     </span>
                 </div>

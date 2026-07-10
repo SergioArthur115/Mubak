@@ -313,3 +313,78 @@
     font-weight: bold;
     text-decoration: underline;
 }
+
+/* --- Cupom de desconto (finalizar compra) --- */
+.cupom_form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.input_cupom {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 14px;
+    border: 2px solid var(--cor-primaria);
+    border-radius: var(--borda-radius);
+    font-size: 15px;
+    background-color: var(--cor-branca);
+    outline: none;
+    text-transform: uppercase;
+    transition: border-color 0.3s;
+}
+
+.input_cupom:focus {
+    border-color: var(--cor-destaque);
+}
+
+.btn_aplicar_cupom {
+    padding: 10px 22px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+    border: none;
+    border-radius: var(--borda-radius);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn_aplicar_cupom:hover {
+    background-color: var(--cor-destaque);
+}
+
+.cupom_aplicado_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cupom_aplicado_badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(39, 174, 96, 0.15);
+    color: var(--cor-sucesso);
+    border: 2px solid var(--cor-sucesso);
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.link_remover_cupom {
+    color: var(--cor-perigo);
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.cupom_desconto_linha {
+    color: var(--cor-sucesso) !important;
+    font-weight: bold;
+}
+
+.cupom_desconto_linha span {
+    color: var(--cor-sucesso);
+}

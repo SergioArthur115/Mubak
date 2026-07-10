@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - Admin Cupons</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+    <main>
+        <div class="admin_container">
+            <div class="admin_topo">
+                <h2>Painel — Cupons</h2>
+                <a href="{{ url_for('admin.novo_cupom') }}" class="btn_admin btn_novo">
+                    + Novo Cupom
+                </a>
+            </div>
+
+            <div class="admin_tabs">
+                <a href="{{ url_for('admin.painel') }}" class="tab_link">Usuários</a>
+                <a href="{{ url_for('admin.admin_produtos') }}" class="tab_link">Produtos</a>
+                <a href="{{ url_for('admin.admin_cupons') }}" class="tab_link ativo">Cupons</a>
+            </div>
+
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+            <ul class="admin_flash">
+                {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            <table class="admin_tabela">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Código</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>Desconto</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cupom in cupons %}
+                    <tr>
+                        <td>{{ cupom.id_cupom }}</td>
+                        <td>{{ cupom.codigo }}</td>
+                        <td>{{ cupom.inicio }}</td>
+                        <td>{{ cupom.fim }}</td>
+                        <td>{{ "%.0f"|format(cupom.valor) }}%</td>
+                        <td>
+                            <span class="status_badge {{ 'status_pago' if cupom.ativo else 'status_cancelado' }}">
+                                {{ 'Ativo' if cupom.ativo else 'Inativo' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="admin_tabela_acoes">
+                                <a href="{{ url_for('admin.editar_cupom', id_cupom=cupom.id_cupom) }}"
+                                   class="btn_admin btn_editar">Editar</a>
+                                <a href="{{ url_for('admin.alternar_cupom_view', id_cupom=cupom.id_cupom) }}"
+                                   class="btn_admin {{ 'btn_excluir' if cupom.ativo else 'btn_novo' }}"
+                                   onclick="return confirm('{{ 'Desativar' if cupom.ativo else 'Ativar' }} este cupom?')">
+                                    {{ 'Desativar' if cupom.ativo else 'Ativar' }}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7">Nenhum cupom cadastrado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+</body>
+</html>

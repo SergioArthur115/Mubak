@@ -15,6 +15,33 @@
     <main>
         <div class="finalizar_container">
             <h2 class="finalizar_titulo">Finalizar Compra</h2>
+
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+            <ul class="flash_msgs sucesso">
+                {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            <div class="finalizar_secao">
+                <h2>Cupom de Desconto</h2>
+                {% if cupom_aplicado %}
+                <div class="cupom_aplicado_info">
+                    <span class="cupom_aplicado_badge">
+                        ✔ Cupom "{{ cupom_aplicado.codigo }}" aplicado ({{ "%.0f"|format(cupom_aplicado.valor) }}% off)
+                    </span>
+                    <a href="{{ url_for('carrinho.remover_cupom') }}" class="link_remover_cupom">Remover cupom</a>
+                </div>
+                {% else %}
+                <form method="POST" action="{{ url_for('carrinho.aplicar_cupom') }}" class="cupom_form">
+                    <input type="text" name="codigo_cupom" placeholder="Digite seu cupom"
+                           class="input_cupom" autocomplete="off">
+                    <button type="submit" class="btn_aplicar_cupom">Aplicar</button>
+                </form>
+                {% endif %}
+            </div>
+
             <form method="POST" action="{{ url_for('carrinho.finalizar') }}">
                 <div class="finalizar_secao">
                     <h2>Endereço de Entrega</h2>
@@ -66,6 +93,16 @@
                         <span>R$ {{ "%.2f"|format(item.quantidade * item.preco_unitario)|replace(".", ",") }}</span>
                     </div>
                     {% endfor %}
+                    <div class="resumo_item">
+                        <span>Subtotal</span>
+                        <span>R$ {{ "%.2f"|format(subtotal)|replace(".", ",") }}</span>
+                    </div>
+                    {% if desconto > 0 %}
+                    <div class="resumo_item cupom_desconto_linha">
+                        <span>Desconto {% if cupom_aplicado %}({{ cupom_aplicado.codigo }}){% endif %}</span>
+                        <span>- R$ {{ "%.2f"|format(desconto)|replace(".", ",") }}</span>
+                    </div>
+                    {% endif %}
                     <div class="resumo_total">
                         <span>Total</span>
                         <span>R$ {{ "%.2f"|format(total)|replace(".", ",") }}</span>

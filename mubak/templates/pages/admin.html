@@ -25,6 +25,7 @@
             <div class="admin_tabs">
                 <a href="{{ url_for('admin.painel') }}" class="tab_link ativo">Usuários</a>
                 <a href="{{ url_for('admin.admin_produtos') }}" class="tab_link">Produtos</a>
+                <a href="{{ url_for('admin.admin_cupons') }}" class="tab_link">Cupons</a>
             </div>
 
             {% with msgs = get_flashed_messages() %}

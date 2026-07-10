@@ -1,6 +1,7 @@
 import sqlite3
 from config import DATABASE
 from werkzeug.security import generate_password_hash
+from datetime import date, timedelta
 
 
 def get_db_connection():
@@ -86,8 +87,11 @@ def init_db():
             data_pedido DATE NOT NULL,
             valor_total DECIMAL(10,2) NOT NULL,
             status_pedido VARCHAR(50) NOT NULL,
+            id_cupom INT,
+            valor_desconto DECIMAL(10,2) DEFAULT 0,
             FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
-            FOREIGN KEY(id_endereco) REFERENCES endereco(id_endereco)
+            FOREIGN KEY(id_endereco) REFERENCES endereco(id_endereco),
+            FOREIGN KEY(id_cupom) REFERENCES cupom(id_cupom)
         );
 
         CREATE TABLE IF NOT EXISTS item_carrinho(
@@ -143,6 +147,13 @@ def init_db():
             UNIQUE(id_usuario, id_produto)
         );
     """)
+
+    # ── Migração: bancos já existentes podem não ter as colunas de cupom em pedido ──
+    colunas_pedido = [row['name'] for row in conn.execute('PRAGMA table_info(pedido)').fetchall()]
+    if 'id_cupom' not in colunas_pedido:
+        conn.execute('ALTER TABLE pedido ADD COLUMN id_cupom INT')
+    if 'valor_desconto' not in colunas_pedido:
+        conn.execute('ALTER TABLE pedido ADD COLUMN valor_desconto DECIMAL(10,2) DEFAULT 0')
 
     # Perfis padrão
     conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (1, 'Admin')")
@@ -283,6 +294,20 @@ def init_db():
             "default.png",
         ),
     )
+
+    # Cupons de exemplo (o campo "valor" é um percentual de desconto)
+    hoje = date.today()
+    validade_longa = (hoje + timedelta(days=365)).isoformat()
+    cupons_exemplo = [
+        (1, "BEMVINDO10", hoje.isoformat(), validade_longa, 10.0, 1),
+        (2, "MUBAK20", hoje.isoformat(), validade_longa, 20.0, 1),
+    ]
+    for id_cupom, codigo, inicio, fim, valor, ativo in cupons_exemplo:
+        conn.execute(
+            """INSERT OR IGNORE INTO cupom (id_cupom, codigo, inicio, fim, valor, ativo)
+               VALUES (?,?,?,?,?,?)""",
+            (id_cupom, codigo, inicio, fim, valor, ativo),
+        )
 
     conn.commit()
     conn.close()

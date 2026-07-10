@@ -8,6 +8,10 @@ from models.produto_model import (
     get_todos_produtos, get_produto_por_id, criar_produto,
     atualizar_produto, deletar_produto, adicionar_imagem_produto, get_todas_categorias
 )
+from models.cupom_model import (
+    get_todos_cupons, get_cupom_por_id, criar_cupom,
+    atualizar_cupom, alternar_status_cupom
+)
 from utils.decorators import admin_required
 import os, uuid
 from config import UPLOAD_FOLDER
@@ -224,3 +228,77 @@ def deletar_produto_view(id_produto):
     deletar_produto(id_produto)
     flash('Produto excluído.')
     return redirect(url_for('admin.admin_produtos'))
+
+
+# ── Cupons ─────────────────────────────────────────────────────────────────────
+
+@bp.route('/admin/cupons')
+@admin_required
+def admin_cupons():
+    cupons = get_todos_cupons()
+    return render_template('pages/admin_cupons.html', cupons=cupons)
+
+
+@bp.route('/admin/cupom/novo', methods=['GET', 'POST'])
+@admin_required
+def novo_cupom():
+    if request.method == 'POST':
+        codigo = request.form.get('codigo', '').strip()
+        inicio = request.form.get('inicio', '')
+        fim    = request.form.get('fim', '')
+        valor  = float(request.form.get('valor', 0))
+        ativo  = bool(request.form.get('ativo'))
+
+        if not codigo or not inicio or not fim:
+            flash('Preencha todos os campos obrigatórios.')
+            return redirect(url_for('admin.novo_cupom'))
+
+        if fim < inicio:
+            flash('A data final deve ser posterior à data inicial.')
+            return redirect(url_for('admin.novo_cupom'))
+
+        criar_cupom(codigo, inicio, fim, valor, ativo)
+        flash('Cupom criado com sucesso!')
+        return redirect(url_for('admin.admin_cupons'))
+
+    return render_template('pages/admin_cupom_form.html', cupom=None)
+
+
+@bp.route('/admin/cupom/editar/<int:id_cupom>', methods=['GET', 'POST'])
+@admin_required
+def editar_cupom(id_cupom):
+    cupom = get_cupom_por_id(id_cupom)
+    if not cupom:
+        return "Cupom não encontrado", 404
+
+    if request.method == 'POST':
+        codigo = request.form.get('codigo', '').strip()
+        inicio = request.form.get('inicio', '')
+        fim    = request.form.get('fim', '')
+        valor  = float(request.form.get('valor', 0))
+        ativo  = bool(request.form.get('ativo'))
+
+        if not codigo or not inicio or not fim:
+            flash('Preencha todos os campos obrigatórios.')
+            return redirect(url_for('admin.editar_cupom', id_cupom=id_cupom))
+
+        if fim < inicio:
+            flash('A data final deve ser posterior à data inicial.')
+            return redirect(url_for('admin.editar_cupom', id_cupom=id_cupom))
+
+        atualizar_cupom(id_cupom, codigo, inicio, fim, valor, ativo)
+        flash('Cupom atualizado!')
+        return redirect(url_for('admin.admin_cupons'))
+
+    return render_template('pages/admin_cupom_form.html', cupom=cupom)
+
+
+@bp.route('/admin/cupom/status/<int:id_cupom>')
+@admin_required
+def alternar_cupom_view(id_cupom):
+    cupom = get_cupom_por_id(id_cupom)
+    if not cupom:
+        return "Cupom não encontrado", 404
+    alternar_status_cupom(id_cupom)
+    flash('Cupom ativado.' if not cupom['ativo'] else 'Cupom desativado.')
+    return redirect(url_for('admin.admin_cupons'))

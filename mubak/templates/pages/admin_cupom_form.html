@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mubak - {{ 'Editar' if cupom else 'Novo' }} Cupom</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/mubak_icon.png') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+    <main>
+        <div class="admin_form_container">
+            <div class="cadastro_box">
+                <h2>{{ 'Editar Cupom' if cupom else 'Novo Cupom' }}</h2>
+
+                {% with msgs = get_flashed_messages() %}
+                {% if msgs %}
+                <ul class="admin_flash">
+                    {% for m in msgs %}<li>{{ m }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+
+                <form class="cadastro_form" method="POST"
+                      action="{{ url_for('admin.editar_cupom', id_cupom=cupom.id_cupom) if cupom else url_for('admin.novo_cupom') }}">
+
+                    <div class="cadastro_campo">
+                        <label for="codigo">Código do Cupom</label>
+                        <input type="text" id="codigo" name="codigo" required
+                               placeholder="Ex: BEMVINDO10"
+                               value="{{ cupom.codigo if cupom else '' }}">
+                        <span class="campo_hint">O código será salvo em maiúsculas.</span>
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="valor">Desconto (%)</label>
+                        <input type="number" id="valor" name="valor"
+                               step="0.01" min="0" max="100" required
+                               value="{{ cupom.valor if cupom else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="inicio">Válido a partir de</label>
+                        <input type="date" id="inicio" name="inicio" required
+                               value="{{ cupom.inicio if cupom else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo">
+                        <label for="fim">Válido até</label>
+                        <input type="date" id="fim" name="fim" required
+                               value="{{ cupom.fim if cupom else '' }}">
+                    </div>
+
+                    <div class="cadastro_campo cadastro_campo_row">
+                        <input type="checkbox" id="ativo" name="ativo" value="1"
+                               {{ 'checked' if not cupom or cupom.ativo }}>
+                        <label for="ativo">Cupom ativo</label>
+                    </div>
+
+                    <button type="submit" class="btn_cadastrar">
+                        {{ 'Salvar Alterações' if cupom else 'Criar Cupom' }}
+                    </button>
+                </form>
+
+                <div class="form_voltar">
+                    <a href="{{ url_for('admin.admin_cupons') }}">← Voltar para cupons</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+</body>
+</html>

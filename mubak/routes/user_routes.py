@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.usuario_model import get_usuario_por_id, atualizar_usuario, criar_endereco, get_enderecos_usuario
-from models.pedido_model import get_pedidos_usuario, get_itens_pedido
+from models.pedido_model import get_pedidos_usuario, get_itens_pedido, get_pedido_por_id
 from utils.decorators import login_required
 import os, uuid
 from config import UPLOAD_FOLDER
@@ -78,4 +78,7 @@ def perfil_pedidos():
 @login_required
 def detalhe_pedido(id_pedido):
     itens = get_itens_pedido(id_pedido)
-    return render_template('pages/detalhe_pedido.html', itens=itens, id_pedido=id_pedido)
+    pedido = get_pedido_por_id(id_pedido)
+    return render_template(
+        'pages/detalhe_pedido.html', itens=itens, id_pedido=id_pedido, pedido=pedido
+    )
