@@ -6,7 +6,8 @@ def get_carrinho_usuario(id_usuario):
     conn = get_db_connection()
     rows = conn.execute(
         """SELECT ic.*, p.nome, p.preco, p.estoque,
-                  (SELECT imagem FROM imagem_produto WHERE id_produto=p.id_produto LIMIT 1) AS imagem
+                  (SELECT id_imagem FROM imagem_produto
+                   WHERE id_produto=p.id_produto ORDER BY id_imagem LIMIT 1) AS id_imagem
            FROM item_carrinho ic
            JOIN produto p ON ic.id_produto = p.id_produto
            WHERE ic.id_usuario=?""",

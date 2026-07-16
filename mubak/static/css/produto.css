@@ -31,10 +31,84 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.produto_detalhe_imagem img {
+/* --- Carrossel de imagens do produto --- */
+.produto_carrossel {
+    position: relative;
+    width: 100%;
+}
+
+.produto_carrossel_viewport {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--cor-branca);
+}
+
+.produto_carrossel_trilho {
+    display: flex;
+    transition: transform 0.35s ease;
+}
+
+.produto_carrossel_slide {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+}
+
+.produto_carrossel_slide img {
     max-width: 100%;
     max-height: 320px;
     object-fit: contain;
+}
+
+.carrossel_seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--cor-primaria);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--cor-primaria);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.carrossel_seta:hover {
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+}
+
+.carrossel_seta_esq { left: 8px; }
+.carrossel_seta_dir { right: 8px; }
+
+.produto_carrossel_dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.carrossel_dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(10, 35, 50, 0.25);
+    border: 2px solid var(--cor-primaria);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.carrossel_dot.ativo {
+    background: var(--cor-primaria);
 }
 
 .produto_miniaturas {
@@ -51,11 +125,19 @@
     border: 2px solid var(--cor-primaria);
     border-radius: 4px;
     cursor: pointer;
-    transition: border-color 0.2s;
+    opacity: 0.6;
+    transition: border-color 0.2s, opacity 0.2s;
+    background: var(--cor-branca);
 }
 
 .miniatura:hover {
     border-color: var(--cor-destaque);
+    opacity: 0.9;
+}
+
+.miniatura.ativa {
+    border-color: var(--cor-destaque);
+    opacity: 1;
 }
 
 .produto_detalhe_info_principal {

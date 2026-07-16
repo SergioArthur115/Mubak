@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, Response, url_for, redirect
 from models.produto_model import (
     get_todos_produtos, get_produto_por_id,
-    get_imagens_produto, get_todas_categorias, get_produtos_destaque
+    get_imagens_produto, get_todas_categorias, get_produtos_destaque,
+    get_imagem_por_id
 )
 from models.favorito_model import get_ids_favoritos_usuario, is_favorito
 
@@ -72,4 +73,17 @@ def pesquisar():
         categoria_ativa=None,
         busca=busca,
         favoritos_ids=favoritos_ids
+    )
+
+
+@bp.route('/imagem_produto/<int:id_imagem>')
+def imagem_produto(id_imagem):
+    """Serve a imagem de um produto diretamente do banco de dados (BLOB)."""
+    img = get_imagem_por_id(id_imagem)
+    if not img or not img['dados']:
+        return redirect(url_for('static', filename='images/temp.png'))
+    return Response(
+        img['dados'],
+        mimetype=img['mimetype'] or 'image/jpeg',
+        headers={'Cache-Control': 'public, max-age=86400'}
     )

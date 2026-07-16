@@ -172,12 +172,15 @@ def novo_produto():
             preco, estoque, id_categoria, status_prod
         )
 
+        # As imagens do produto são salvas diretamente no banco de dados (BLOB),
+        # e não mais como arquivos em disco.
         for file in files:
             if file and file.filename:
-                ext      = file.filename.rsplit('.', 1)[-1]
-                filename = f"{uuid.uuid4()}.{ext}"
-                file.save(os.path.join(UPLOAD_FOLDER, filename))
-                adicionar_imagem_produto(id_novo, filename)
+                dados = file.read()
+                if dados:
+                    adicionar_imagem_produto(
+                        id_novo, file.filename, dados, file.mimetype
+                    )
 
         flash('Produto criado com sucesso!')
         return redirect(url_for('admin.admin_produtos'))
@@ -211,10 +214,11 @@ def editar_produto(id_produto):
 
         for file in files:
             if file and file.filename:
-                ext      = file.filename.rsplit('.', 1)[-1]
-                filename = f"{uuid.uuid4()}.{ext}"
-                file.save(os.path.join(UPLOAD_FOLDER, filename))
-                adicionar_imagem_produto(id_produto, filename)
+                dados = file.read()
+                if dados:
+                    adicionar_imagem_produto(
+                        id_produto, file.filename, dados, file.mimetype
+                    )
 
         flash('Produto atualizado!')
         return redirect(url_for('admin.admin_produtos'))

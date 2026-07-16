@@ -35,7 +35,7 @@ def init_db():
 
         CREATE TABLE IF NOT EXISTS categoria(
             id_categoria INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            nome varchar(50) NOT NULL,
+            nome varchar(50) NOT NULL UNIQUE,
             descricao varchar(100) NOT NULL
         );
 
@@ -64,6 +64,8 @@ def init_db():
             id_imagem INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             imagem varchar NOT NULL,
             id_produto INT NOT NULL,
+            dados BLOB,
+            mimetype varchar(50),
             FOREIGN KEY(id_produto) REFERENCES produto(id_produto)
         );
 
@@ -159,6 +161,18 @@ def init_db():
             "ALTER TABLE pedido ADD COLUMN valor_desconto DECIMAL(10,2) DEFAULT 0"
         )
 
+    # ── Migração: bancos já existentes podem não ter as colunas de imagem binária ──
+    colunas_imagem = [
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(imagem_produto)").fetchall()
+    ]
+    if "dados" not in colunas_imagem:
+        conn.execute("ALTER TABLE imagem_produto ADD COLUMN dados BLOB")
+    if "mimetype" not in colunas_imagem:
+        conn.execute("ALTER TABLE imagem_produto ADD COLUMN mimetype varchar(50)")
+
+    conn.commit()
+
     # Perfis padrão
     conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (1, 'Admin')")
     conn.execute("INSERT OR IGNORE INTO perfil (id_perfil, tipo) VALUES (2, 'Usuario')")
@@ -182,10 +196,10 @@ def init_db():
         # Categoria 1: Peças
         (
             1,
-            "Placa de Vídeo RTX 4060",
-            "Placa de vídeo com Ray Tracing e 8GB GDDR6",
-            "8GB GDDR6, 128-bit, DLSS 3.0",
-            2199.00,
+            "Placa de Vídeo RTX 5060",
+            "Placa de vídeo com Ray Tracing e 8GB GDDR7",
+            "8GB GDDR7, 128-bit, DLSS 4.0",
+            2299.99,
             10,
             "ativo",
             1,
@@ -203,10 +217,10 @@ def init_db():
         # Categoria 2: Computadores
         (
             3,
-            "PC Gamer Mubak Alpha",
-            "Desktop completo para jogos e lives",
-            "Intel i5, 16GB RAM, RTX 3050, SSD 512GB",
-            3899.90,
+            "PC Gamer Aquário Preto",
+            "PC Gamer Full Black – Potência, Estilo e Montagem Profissional",
+            "Ryzen 7 5700x, 32GB RAM, RTX 5060Ti, SSD 1TB",
+            9000.90,
             5,
             "ativo",
             2,

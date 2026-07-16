@@ -8,7 +8,8 @@ def get_todos_produtos(categoria_nome=None, preco_min=None, preco_max=None, busc
 
     query = """
         SELECT p.*, c.nome AS categoria_nome,
-               (SELECT imagem FROM imagem_produto WHERE id_produto=p.id_produto LIMIT 1) AS imagem
+               (SELECT id_imagem FROM imagem_produto
+                WHERE id_produto=p.id_produto ORDER BY id_imagem LIMIT 1) AS id_imagem
         FROM produto p
         LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
         WHERE p.status_prod = 'ativo'
@@ -50,12 +51,25 @@ def get_produto_por_id(id_produto):
 
 
 def get_imagens_produto(id_produto):
+    """Retorna as imagens do produto (sem os bytes, para não pesar a consulta).
+    Os bytes são obtidos sob demanda em get_imagem_por_id, ao servir a imagem."""
     conn = get_db_connection()
     imgs = conn.execute(
-        'SELECT * FROM imagem_produto WHERE id_produto=?', (id_produto,)
+        'SELECT id_imagem, imagem, id_produto FROM imagem_produto WHERE id_produto=? ORDER BY id_imagem',
+        (id_produto,)
     ).fetchall()
     conn.close()
     return imgs
+
+
+def get_imagem_por_id(id_imagem):
+    """Retorna uma imagem completa (incluindo os bytes) para ser servida ao navegador."""
+    conn = get_db_connection()
+    img = conn.execute(
+        'SELECT * FROM imagem_produto WHERE id_imagem=?', (id_imagem,)
+    ).fetchone()
+    conn.close()
+    return img
 
 
 def criar_produto(nome, descricao, especificacao_tecnica, preco, estoque, id_categoria, status_prod='ativo'):
@@ -92,12 +106,20 @@ def deletar_produto(id_produto):
     conn.close()
 
 
-def adicionar_imagem_produto(id_produto, nome_arquivo):
+def adicionar_imagem_produto(id_produto, nome_arquivo, dados=None, mimetype=None):
+    """Salva a imagem do produto diretamente no banco de dados (BLOB)."""
     conn = get_db_connection()
     conn.execute(
-        'INSERT INTO imagem_produto (imagem, id_produto) VALUES (?,?)',
-        (nome_arquivo, id_produto)
+        'INSERT INTO imagem_produto (imagem, id_produto, dados, mimetype) VALUES (?,?,?,?)',
+        (nome_arquivo, id_produto, dados, mimetype)
     )
+    conn.commit()
+    conn.close()
+
+
+def remover_imagem_produto(id_imagem):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM imagem_produto WHERE id_imagem=?', (id_imagem,))
     conn.commit()
     conn.close()
 
@@ -106,7 +128,7 @@ def adicionar_imagem_produto(id_produto, nome_arquivo):
 
 def get_todas_categorias():
     conn = get_db_connection()
-    cats = conn.execute('SELECT * FROM categoria').fetchall()
+    cats = conn.execute('SELECT * FROM categoria ORDER BY nome').fetchall()
     conn.close()
     return cats
 
@@ -124,7 +146,8 @@ def get_produtos_destaque(limite=8):
     conn = get_db_connection()
     rows = conn.execute(
         """SELECT p.*,
-                  (SELECT imagem FROM imagem_produto WHERE id_produto=p.id_produto LIMIT 1) AS imagem
+                  (SELECT id_imagem FROM imagem_produto
+                   WHERE id_produto=p.id_produto ORDER BY id_imagem LIMIT 1) AS id_imagem
            FROM produto p
            WHERE p.status_prod = 'ativo'
            ORDER BY p.preco ASC

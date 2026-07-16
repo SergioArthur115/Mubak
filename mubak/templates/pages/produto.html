@@ -23,22 +23,44 @@
             {% endwith %}
             <div class="produto_detalhe_topo">
                 <div class="produto_detalhe_imagem">
-                    {% if imagens %}
-                    <img id="produto-img"
-                         src="{{ url_for('static', filename='uploads/' + imagens[0].imagem) }}"
-                         alt="{{ produto.nome }}">
-                    {% else %}
-                    <img id="produto-img"
-                         src="{{ url_for('static', filename='images/temp.png') }}"
-                         alt="{{ produto.nome }}">
-                    {% endif %}
+                    <div class="produto_carrossel" id="produto-carrossel">
+                        <div class="produto_carrossel_viewport">
+                            <div class="produto_carrossel_trilho" id="produto-trilho">
+                                {% if imagens %}
+                                {% for img in imagens %}
+                                <div class="produto_carrossel_slide">
+                                    <img src="{{ url_for('produto.imagem_produto', id_imagem=img.id_imagem) }}"
+                                         alt="{{ produto.nome }} - imagem {{ loop.index }}">
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="produto_carrossel_slide">
+                                    <img src="{{ url_for('static', filename='images/temp.png') }}"
+                                         alt="{{ produto.nome }}">
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if imagens|length > 1 %}
+                        <button type="button" class="carrossel_seta carrossel_seta_esq"
+                                onclick="mudarSlideProduto(-1)" aria-label="Imagem anterior">‹</button>
+                        <button type="button" class="carrossel_seta carrossel_seta_dir"
+                                onclick="mudarSlideProduto(1)" aria-label="Próxima imagem">›</button>
+                        <div class="produto_carrossel_dots">
+                            {% for img in imagens %}
+                            <span class="carrossel_dot {{ 'ativo' if loop.first }}"
+                                  onclick="irParaSlideProduto({{ loop.index0 }})"></span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
                     {% if imagens|length > 1 %}
                     <div class="produto_miniaturas">
                         {% for img in imagens %}
-                        <img src="{{ url_for('static', filename='uploads/' + img.imagem) }}"
+                        <img src="{{ url_for('produto.imagem_produto', id_imagem=img.id_imagem) }}"
                              alt="Imagem {{ loop.index }}"
-                             onclick="document.getElementById('produto-img').src=this.src"
-                             class="miniatura">
+                             onclick="irParaSlideProduto({{ loop.index0 }})"
+                             class="miniatura {{ 'ativa' if loop.first }}">
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -103,5 +125,6 @@
     </main>
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/menu-ativo.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/produto-carrossel.js') }}"></script>
 </body>
 </html>

@@ -26,8 +26,8 @@
                         {% for prod in destaques %}
                         <article class="produto_card">
                             <a href="{{ url_for('produto.produto', id_produto=prod.id_produto) }}">
-                                {% if prod.imagem %}
-                                <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                                {% if prod.id_imagem %}
+                                <img src="{{ url_for('produto.imagem_produto', id_imagem=prod.id_imagem) }}"
                                      alt="{{ prod.nome }}">
                                 {% else %}
                                 <img src="{{ url_for('static', filename='images/temp.png') }}"
@@ -51,8 +51,8 @@
                         {% for prod in destaques %}
                         <article class="produto_card">
                             <a href="{{ url_for('produto.produto', id_produto=prod.id_produto) }}">
-                                {% if prod.imagem %}
-                                <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                                {% if prod.id_imagem %}
+                                <img src="{{ url_for('produto.imagem_produto', id_imagem=prod.id_imagem) }}"
                                      alt="{{ prod.nome }}">
                                 {% else %}
                                 <img src="{{ url_for('static', filename='images/temp.png') }}"

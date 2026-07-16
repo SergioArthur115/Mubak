@@ -19,8 +19,8 @@
                 <h2>Pedido #{{ id_pedido }}</h2>
                 {% for item in itens %}
                 <div class="carrinho_item">
-                    {% if item.imagem %}
-                    <img src="{{ url_for('static', filename='uploads/' + item.imagem) }}"
+                    {% if item.id_imagem %}
+                    <img src="{{ url_for('produto.imagem_produto', id_imagem=item.id_imagem) }}"
                          alt="{{ item.nome }}">
                     {% else %}
                     <img src="{{ url_for('static', filename='images/temp.png') }}"

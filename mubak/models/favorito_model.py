@@ -6,7 +6,8 @@ def get_favoritos_usuario(id_usuario):
     conn = get_db_connection()
     rows = conn.execute(
         """SELECT f.*, p.nome, p.preco, p.estoque, p.status_prod,
-                  (SELECT imagem FROM imagem_produto WHERE id_produto=p.id_produto LIMIT 1) AS imagem
+                  (SELECT id_imagem FROM imagem_produto
+                   WHERE id_produto=p.id_produto ORDER BY id_imagem LIMIT 1) AS id_imagem
            FROM favorito f
            JOIN produto p ON f.id_produto = p.id_produto
            WHERE f.id_usuario=?

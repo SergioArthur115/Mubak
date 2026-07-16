@@ -75,8 +75,8 @@
                     <tr>
                         <td>{{ prod.id_produto }}</td>
                         <td>
-                            {% if prod.imagem %}
-                            <img src="{{ url_for('static', filename='uploads/' + prod.imagem) }}"
+                            {% if prod.id_imagem %}
+                            <img src="{{ url_for('produto.imagem_produto', id_imagem=prod.id_imagem) }}"
                                  class="thumb_prod" alt="{{ prod.nome }}">
                             {% else %}
                             <img src="{{ url_for('static', filename='images/temp.png') }}"
