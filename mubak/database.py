@@ -228,10 +228,10 @@ def init_db():
         # Categoria 3: Laptops
         (
             4,
-            "Notebook UltraBook Pro",
+            "Hp Omen Transcend 14",
             "Laptop leve e potente para trabalho e estudos",
-            "Tela 14' IPS, AMD Ryzen 7, 16GB RAM, SSD 1TB",
-            4199.00,
+            "Tela 14' OLED, Intel Core Ultra 9, 16GB RAM, SSD 1TB",
+            20199.00,
             8,
             "ativo",
             3,
@@ -239,10 +239,10 @@ def init_db():
         # Categoria 4: Smartphones
         (
             5,
-            "Smartphone Mubak Phone Z",
-            "Celular com câmera tripla e bateria de longa duração",
-            "Tela 6.7', 128GB, Câmera 50MP, 5G",
-            1799.00,
+            "Celular Xiaomi Poco X8 Pro Max",
+            "Celular com bateria de longa duração",
+            "Tela 6.83', 512GB, Câmera 50MP, 5G",
+            2799.00,
             15,
             "ativo",
             4,
@@ -250,10 +250,10 @@ def init_db():
         # Categoria 5: Monitores
         (
             6,
-            "Monitor Gamer 24' 144Hz",
-            "Tela Full HD com alta taxa de atualização",
+            "Monitor Gamer Curva Ultrawide Samsung Odyssey G5",
+            "Tela Uwqhd com alta taxa de atualização",
             "Painel VA, 1ms de resposta, HDMI/DisplayPort",
-            899.90,
+            1499.90,
             12,
             "ativo",
             5,
@@ -261,19 +261,19 @@ def init_db():
         # Categoria 6: Acessórios
         (
             7,
-            "Teclado Mecânico RGB",
-            "Teclado gamer switch azul com iluminação",
-            "Layout ABNT2, Switch Blue, Anti-ghosting",
-            189.90,
+            "Teclado Mecânico Gamer Sem Fio Logitech G915 X Lightspeed",
+            "Teclado gamer com iluminação",
+            "Layout ABNT2, Switches GL Mechanical TACTILE, Anti-ghosting",
+            1089.90,
             30,
             "ativo",
             6,
         ),
         (
             8,
-            "Mouse Gamer Óptico",
+            "Mouse Gamer Razer Deathadder Essential",
             "Mouse ergonômico com ajuste de DPI",
-            "Até 7200 DPI, 6 botões programáveis, RGB",
+            "Até 6400 DPI, 5 botões programáveis, RGB",
             79.90,
             40,
             "ativo",
